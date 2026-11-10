@@ -247,3 +247,12 @@ describe("blocklist", () => {
     expect(safeUrl("https://oldtriangle.com/event/x/")).toBe("https://oldtriangle.com/event/x/");
   });
 });
+
+describe("public calendar subscriptions", () => {
+  it("recognises only public Google Calendar .ics addresses", async () => {
+    const { isPublicCalendarSubscription } = await import("./polite-fetch");
+    expect(isPublicCalendarSubscription("https://calendar.google.com/calendar/ical/splitcrow.halifax%40gmail.com/public/basic.ics")).toBe(true);
+    expect(isPublicCalendarSubscription("https://calendar.google.com/calendar/embed?src=x")).toBe(false);
+    expect(isPublicCalendarSubscription("https://calendar.google.com/calendar/ical/x/private-abc/basic.ics")).toBe(false);
+  });
+});
