@@ -87,7 +87,9 @@ async function main() {
     `[ingest] sources=${JSON.stringify(perSource)} normalised=${normalised.length} ` +
       `rejected=${rejected.length} duplicatesMerged=${merged} stored=${events.length}`,
   );
-  for (const r of rejected.slice(0, 10)) console.log(`  rejected: ${r}`);
+  const counts = new Map<string, number>();
+  for (const r of rejected) counts.set(r, (counts.get(r) ?? 0) + 1);
+  for (const [r, n] of [...counts].slice(0, 30)) console.log(`  rejected ${n}x: ${r}`);
 }
 
 main();

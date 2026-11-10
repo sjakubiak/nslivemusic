@@ -206,6 +206,16 @@ describe("real venue registry and geocoding", () => {
     expect(findVenue("Red Shoe")?.city).toBe("Mabou");
     expect(findVenue("The Local", "Truro")).toBeUndefined();
   });
+  it("falls back to the town when OpenStreetMap doesn't know the venue", async () => {
+    process.env.GEOCODE_CACHE = path.join(os.tmpdir(), `geocode-town-${Date.now()}.json`);
+    const calls: string[] = [];
+    const raws = [{ sourceId: "manual", title: "Jam", venueName: "Firemen's Club", address: "7811 Cabot Trail", city: "Margaree Forks", date: "2026-11-12", startTime: "19:00" }] as RawEvent[];
+    const filled = await geocodeMissing(raws, async (q) => (calls.push(q), q.startsWith("Margaree Forks") ? { lat: 46.33, lng: -61.1 } : null));
+    expect(calls).toEqual(["7811 Cabot Trail, Margaree Forks, Nova Scotia, Canada", "Margaree Forks, Nova Scotia, Canada"]);
+    expect(filled).toBe(1);
+    expect(raws[0].latitude).toBe(46.33);
+  });
+
   it("geocodes by street address and caches results", async () => {
     process.env.GEOCODE_CACHE = path.join(os.tmpdir(), `geocode-test-${process.pid}.json`);
     expect(geocodeQuery({ venueName: "Bearlys", city: "Halifax" })).toBe("1269 Barrington Street, Halifax, Nova Scotia, Canada");
