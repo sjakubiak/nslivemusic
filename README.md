@@ -35,7 +35,7 @@ All date logic runs in `America/Halifax`, so a 9 pm show counts as “today” e
 Sources (src/pipeline/sources/*)  →  normalize.ts  →  dedupe.ts  →  data/events.json
 ```
 
-`npm run ingest` runs the whole pipeline (it also runs automatically before `dev` and `build`). Schedule it every few hours with cron or your host's scheduler. `src/lib/events-store.ts` is the only thing that reads the JSON file, so swapping in Postgres/PostGIS later is a one-file change.
+`npm run ingest` runs the whole pipeline (it also runs automatically before `dev` and `build`). In production the server also re-runs it every 6 hours (`INGEST_INTERVAL_HOURS`, see `src/instrumentation.ts`), so new events appear without a redeploy. `src/lib/events-store.ts` is the only thing that reads the JSON file, so swapping in Postgres/PostGIS later is a one-file change.
 
 **Sources**
 
