@@ -18,6 +18,8 @@ const DATE_OPTIONS: { value: DateFilter; label: string }[] = [
   { value: "CUSTOM", label: "Custom range" },
 ];
 const RADII = [10, 25, 50, 100];
+/** Picking a town or "my location" means "near here": start at 25 km (people can widen it). */
+const DEFAULT_RADIUS = 25;
 
 type LocationMode = { kind: "none" } | { kind: "device"; loc: LatLng } | { kind: "place"; name: string; loc: LatLng };
 
@@ -63,6 +65,7 @@ export default function Finder({ events }: { events: MusicEvent[] }) {
       (p) => {
         setLocation({ kind: "device", loc: { lat: p.coords.latitude, lng: p.coords.longitude } });
         setSort("CLOSEST");
+        setRadius((r) => r || DEFAULT_RADIUS);
       },
       () => setLocError("Couldn't get your location. Pick a town instead."),
       { timeout: 10_000 },
@@ -149,6 +152,7 @@ export default function Finder({ events }: { events: MusicEvent[] }) {
                 if (!v) return setLocation({ kind: "none" });
                 setLocation({ kind: "place", name: v, loc: NS_PLACES[v] });
                 setSort("CLOSEST");
+                setRadius((r) => r || DEFAULT_RADIUS);
               }}
             >
               <option value="">Anywhere in NS</option>
