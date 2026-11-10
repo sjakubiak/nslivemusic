@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import "./globals.css";
+import { isSampleData } from "@/lib/events-store";
 
 export const metadata: Metadata = {
   title: "NS Live Music Finder",
@@ -20,9 +21,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               NS Live Music <span className="brand-sub">Finder</span>
             </span>
           </Link>
-          <span className="sample-badge" title="Events are generated sample data until real scrapers are enabled">
-            Sample data
-          </span>
+          {isSampleData() && (
+            <span className="sample-badge" title="These events are made-up examples until real event sources are switched on">
+              Sample data
+            </span>
+          )}
         </header>
         {children}
       </body>

@@ -4,7 +4,7 @@ Find live music, open mics, jam sessions and karaoke at pubs, breweries, restaur
 
 Built from the v1.0 spec: Next.js 15 (App Router) + React 19 + TypeScript, Leaflet with marker clustering on OpenStreetMap tiles. No API keys needed.
 
-> **Sample data:** until real scrapers are switched on, events come from 16 *fictional* venues placed in real NS towns (Halifax, Dartmouth, Wolfville, Lunenburg, Truro, Antigonish, Sydney, Baddeck, Yarmouth, …). Dates are generated relative to today so “tonight” always has something on.
+> **Sample data:** until a real source returns events, the app shows events from 16 *fictional* venues placed in real NS towns, with dates generated relative to today. Real sources (hand-entered events, venue/community iCal feeds, WordPress event calendars, Eventbrite, venue-granted Facebook Pages) are built and switch on as permissions come in. See [docs/SOURCES.md](docs/SOURCES.md).
 
 ## Quick start
 
@@ -39,9 +39,18 @@ Sources (src/pipeline/sources/*)  →  normalize.ts  →  dedupe.ts  →  data/e
 
 **Sources**
 
-- `sample-venues` / `sample-listing`: offline generators. The listing source deliberately re-lists a third of the venue events with different wording, venue names without “The”, and doors-time starts, so dedup has real work (45 duplicates merged on a typical run). Set `DISABLE_SAMPLE_DATA=1` to turn them off.
-- `jsonld-venue`: generic venue-website scraper that reads schema.org `Event`/`MusicEvent` JSON-LD (what Squarespace, Wix and most WordPress event plugins emit). Add pages to `VENUE_PAGES` once you've checked the site's terms.
-- `eventbrite`: stub for the official API (organizer-scoped, needs `EVENTBRITE_TOKEN`). Eventbrite and Facebook must go through their APIs, never HTML scraping, which their terms forbid.
+Real sources (see [docs/SOURCES.md](docs/SOURCES.md) for the venue research and how to switch each on):
+
+- `manual`: hand-entered or venue-submitted events in `data/manual-events.json`, one-off or weekly.
+- `ical`: iCalendar feeds listed in `feeds.ts` (Google Calendar, WordPress "?ical=1", Squarespace), with RRULE/EXDATE support. Each feed stays off until its owner says yes.
+- `wp-tribe`: WordPress "The Events Calendar" JSON API, for sites whose robots.txt allows it.
+- `jsonld-venue`: venue pages with schema.org `Event` JSON-LD (`VENUE_PAGES`).
+- `eventbrite`: official API, organizer-scoped (`EVENTBRITE_TOKEN`, `EVENTBRITE_ORGANIZER_IDS`).
+- `facebook-pages`: Graph API for venue Pages that grant a token (`FACEBOOK_PAGES`). We never scrape facebook.com.
+
+Sample sources: `sample-venues` / `sample-listing` are offline generators. The listing source re-lists a third of the venue events with different wording, so dedup has real work. `SAMPLE_DATA=auto` (default) uses them only when no real source returned events; `on` / `off` force it.
+
+Events still missing coordinates after the venue registry (`venues-ns.ts`, real venues; `venues.ts`, samples) are geocoded with OpenStreetMap Nominatim and cached.
 
 **Scraping etiquette** (`polite-fetch.ts`): descriptive User-Agent, robots.txt honoured, max one request per host every 5 s. Every source also carries a `termsNote` documenting why collection is allowed.
 

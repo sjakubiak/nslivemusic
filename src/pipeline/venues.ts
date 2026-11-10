@@ -2,9 +2,11 @@
  * Venue registry. Used to geocode/standardise scraped events whose source only
  * gives a venue name, and by the sample sources to generate demo data.
  *
- * NOTE: these are fictional sample venues placed in real Nova Scotia towns.
- * Replace with real venues as scrapers are onboarded.
+ * VENUES are fictional sample venues placed in real Nova Scotia towns, used
+ * only by the sample sources. Real venues live in venues-ns.ts.
  */
+import { NS_VENUES } from "./venues-ns";
+
 export interface Weekly {
   weekday: number; // 0 = Sunday
   start: string; // "HH:MM" Halifax time
@@ -272,11 +274,26 @@ export const VENUES: Venue[] = [
   },
 ];
 
-export function findVenue(name: string, city?: string): Venue | undefined {
+/** What normalisation needs to know about a venue, whichever registry it's in. */
+export interface VenueInfo {
+  name: string;
+  address?: string;
+  city: string;
+  website?: string;
+  latitude?: number;
+  longitude?: number;
+}
+
+function registry(): (VenueInfo & { aliases?: string[] })[] {
+  return [...NS_VENUES, ...VENUES];
+}
+
+export function findVenue(name: string, city?: string): VenueInfo | undefined {
   const n = normaliseVenueName(name);
-  return VENUES.find(
-    (v) => normaliseVenueName(v.name) === n && (!city || v.city.toLowerCase() === city.toLowerCase()),
-  ) ?? VENUES.find((v) => normaliseVenueName(v.name) === n);
+  if (!n) return undefined;
+  const hits = registry().filter((v) => [v.name, ...(v.aliases ?? [])].some((x) => normaliseVenueName(x) === n));
+  // A known name in a different town is a different place ("The Local" isn't only in Halifax).
+  return city?.trim() ? hits.find((v) => v.city.toLowerCase() === city.trim().toLowerCase()) : hits[0];
 }
 
 /** "The Rusty Anchor Pub" → "rusty anchor" */

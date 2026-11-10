@@ -150,7 +150,8 @@ export function normaliseEvent(raw: RawEvent, now = new Date()): { event: MusicE
   const endTime = normaliseTime(raw.endTime);
   if (endTime) {
     end = nsLocalToUtc(nsDayKey(start), endTime);
-    if (end <= start) end = new Date(end.getTime() + 24 * 3600_000); // runs past midnight
+    if (end.getTime() === start.getTime()) end = undefined; // feeds often repeat the start as the end
+    else if (end < start) end = new Date(end.getTime() + 24 * 3600_000); // runs past midnight
   }
 
   const city = venue?.city ?? raw.city?.trim() ?? "";
