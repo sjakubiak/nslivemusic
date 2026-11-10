@@ -184,6 +184,22 @@ describe("manual entries", () => {
   });
 });
 
+describe("hand-entered weekly nights (data/manual-events.json)", () => {
+  it("every entry is complete, in Nova Scotia time and expands to events", async () => {
+    const fs = await import("node:fs");
+    const { events } = JSON.parse(fs.readFileSync(path.join(process.cwd(), "data", "manual-events.json"), "utf8"));
+    expect(events.length).toBeGreaterThan(0);
+    for (const e of events) {
+      expect(e.title && e.venue && e.city && e.source && e.confirmedOn).toBeTruthy();
+      expect(e.start).toMatch(/^\d{2}:\d{2}$/);
+      expect(e.weekly ?? e.date).toBeTruthy();
+      if (e.biweekly) expect(e.from).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    }
+    const raw = expandManual(events, new Date(`${events[0].confirmedOn}T16:00:00Z`));
+    for (const e of events) expect(raw.some((r) => r.title === e.title && r.venueName === e.venue)).toBe(true);
+  });
+});
+
 describe("real venue registry and geocoding", () => {
   it("matches aliases and respects towns", () => {
     expect(findVenue("Bearlys", "Halifax")?.name).toBe("Bearly's House of Blues & Ribs");
@@ -192,7 +208,7 @@ describe("real venue registry and geocoding", () => {
   });
   it("geocodes by street address and caches results", async () => {
     process.env.GEOCODE_CACHE = path.join(os.tmpdir(), `geocode-test-${process.pid}.json`);
-    expect(geocodeQuery({ venueName: "Bearlys", city: "Halifax" })).toBe("1579 Grafton Street, Halifax, Nova Scotia, Canada");
+    expect(geocodeQuery({ venueName: "Bearlys", city: "Halifax" })).toBe("1269 Barrington Street, Halifax, Nova Scotia, Canada");
     expect(geocodeQuery({ venueName: "Red Shoe", city: "Mabou" })).toBe("Red Shoe, Mabou, Nova Scotia, Canada");
     const calls: string[] = [];
     const raws: RawEvent[] = [

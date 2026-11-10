@@ -14,7 +14,11 @@ Until at least one real source returns events, the app keeps showing the fiction
 
 Discovered sources are used by the next ingest automatically. Public Google Calendar subscription addresses (`/calendar/ical/<id>/public/basic.ics`) are fetched even though Google's robots.txt covers calendar pages, because they're published for calendar apps to subscribe to (decided 2026-11-10). Set `DISABLE_DISCOVERED=1` to ignore them. The finder goes through `politeFetch` (robots.txt, 5 seconds per host), caps pages per site, and never crawls social media or ticketing sites. Events outside Nova Scotia are dropped. To widen the net, add pages to `seeds.ts`.
 
-Planned: AI extraction for plain-text schedules, and web search for new venues. Each needs an API key.
+Not planned: AI reading of venue pages (decided 2026-11-10). Web search for new venues (Brave Search) is optional and needs a key.
+
+## Weekly nights entered by hand
+
+`data/manual-events.json` holds 34 regular nights across the province (open mics, jams, trad sessions, ceilidhs, kitchen parties), gathered on 2026-11-10 from the venues' own pages, Annapolis Valley Events (valleyevents.ca) and Music Cape Breton's daily calendar (musiccapebreton.com), which also covers mainland sessions. Venues that already have a calendar feed (Old Triangle, Durty Nelly's, Split Crow, Celtic Music Interpretive Centre) are left out to avoid duplicates. Ingest warns when an entry hasn't been re-checked for 90 days. Re-check those sources and update `confirmedOn`, and remove nights that have stopped. Many rural sessions are seasonal.
 
 ## How to switch a source on
 
