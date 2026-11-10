@@ -35,6 +35,13 @@ export function geocodeQuery(r: Pick<RawEvent, "venueName" | "address" | "city">
   return `${street || r.venueName}, ${city}, Nova Scotia, Canada`;
 }
 
+/** Rural addresses ("148 Main Street, Port Hood") are often missing from OpenStreetMap. */
+export function townQuery(r: Pick<RawEvent, "venueName" | "address" | "city">): string | null {
+  const city = r.city ?? findVenue(r.venueName, r.city)?.city;
+  if (!city) return null;
+  return `${city}, Nova Scotia, Canada`;
+}
+
 export async function geocodeMissing(raws: RawEvent[], lookup: (q: string) => Promise<{ lat: number; lng: number } | null> = nominatim): Promise<number> {
   const cache = loadCache();
   let lookups = 0;
@@ -45,17 +52,24 @@ export async function geocodeMissing(raws: RawEvent[], lookup: (q: string) => Pr
     if (v?.latitude != null) continue; // registry already places it
     const q = geocodeQuery(r);
     if (!q) continue;
-    if (!(q in cache)) {
-      if (lookups >= MAX_LOOKUPS_PER_RUN) continue;
-      lookups++;
-      try {
-        cache[q] = await lookup(q);
-      } catch (err) {
-        console.warn(`[geocode] ${q}: ${(err as Error).message}`);
-        continue; // don't cache transient errors
+    // A small-town hall or pub that OpenStreetMap doesn't know still belongs
+    // on the map: fall back to the middle of its town.
+    const town = townQuery(r);
+    let hit: { lat: number; lng: number } | null | undefined;
+    for (const query of town && town !== q ? [q, town] : [q]) {
+      if (!(query in cache)) {
+        if (lookups >= MAX_LOOKUPS_PER_RUN) break;
+        lookups++;
+        try {
+          cache[query] = await lookup(query);
+        } catch (err) {
+          console.warn(`[geocode] ${query}: ${(err as Error).message}`);
+          break; // don't cache transient errors
+        }
       }
+      hit = cache[query];
+      if (hit) break;
     }
-    const hit = cache[q];
     if (hit) {
       r.latitude = hit.lat;
       r.longitude = hit.lng;
