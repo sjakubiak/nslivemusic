@@ -13,6 +13,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { politeFetch } from "../pipeline/polite-fetch";
+import { isBlocked } from "../pipeline/blocklist";
 import { detectSources } from "./detect";
 import { LISTING_PAGES, VENUE_SITES } from "./seeds";
 import { type Found, discoveredPath, loadDiscovered, mergeFound } from "./store";
@@ -51,6 +52,7 @@ async function main() {
   const seen = new Set<string>();
   const perHost = new Map<string, number>();
   const enqueue = (it: Item) => {
+    if (isBlocked(it.url)) return;
     const u = new URL(it.url);
     const key = `${u.origin}${u.pathname}`;
     if (seen.has(key)) return;

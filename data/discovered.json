@@ -2,12 +2,6 @@
   "updatedAt": "2026-11-10T18:29:13.335Z",
   "feeds": [
     {
-      "key": "http://magic949.ca/events/month/{month}/?ical=1",
-      "foundOn": "http://magic949.ca/",
-      "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
-    },
-    {
       "key": "https://calendar.google.com/calendar/ical/c_524efec355b321b914df03be204b6da8a7677b16e2d92d7a9761474f46c8f0d6%40group.calendar.google.com/public/basic.ics",
       "foundOn": "http://www.celticmusiccentre.com/events",
       "firstSeen": "2026-11-10",
@@ -32,12 +26,6 @@
       "lastSeen": "2026-11-10"
     },
     {
-      "key": "https://magic949.ca/events/month/{month}/?ical=1",
-      "foundOn": "https://magic949.ca/valley-events/",
-      "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
-    },
-    {
       "key": "https://oldtriangle.com/events/?ical=1",
       "foundOn": "https://www.oldtriangle.com/events/",
       "firstSeen": "2026-11-10",
@@ -58,24 +46,6 @@
     {
       "key": "https://oldtriangle.com/events/month/{month}/?ical=1",
       "foundOn": "https://oldtriangle.com/event/the-plugs-8/",
-      "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
-    },
-    {
-      "key": "https://rainbowregistered.com/events/?ical=1",
-      "foundOn": "https://rainbowregistered.ca/events/",
-      "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
-    },
-    {
-      "key": "https://rainbowregistered.com/events/list/?ical=1",
-      "foundOn": "https://rainbowregistered.ca/events/",
-      "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
-    },
-    {
-      "key": "https://rainbowregistered.com/events/list/?outlook-ical=1",
-      "foundOn": "https://rainbowregistered.ca/events/",
       "firstSeen": "2026-11-10",
       "lastSeen": "2026-11-10"
     },
@@ -126,12 +96,6 @@
     {
       "key": "https://oldtriangle.com/event/travis-hatcher-9/",
       "foundOn": "https://oldtriangle.com/",
-      "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
-    },
-    {
-      "key": "https://rainbowregistered.ca/events/",
-      "foundOn": "https://rainbowregistered.ca/",
       "firstSeen": "2026-11-10",
       "lastSeen": "2026-11-10"
     },

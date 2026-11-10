@@ -13,6 +13,7 @@ import { nsDayKey } from "../lib/time";
 import { loadDiscovered } from "../discovery/store";
 import { stableId } from "./normalize";
 import { NS_VENUES } from "./venues-ns";
+import { isBlocked } from "./blocklist";
 
 export type FeedKind =
   /** iCalendar (.ics) export: Google Calendar public URL, WordPress "?ical=1", Squarespace, etc. */
@@ -44,21 +45,9 @@ export interface Feed {
   musicOnly?: boolean;
 }
 
-export const FEEDS: Feed[] = [
-  {
-    id: "livemusichalifax-ical",
-    name: "Live Music Halifax (community calendar)",
-    kind: "ical",
-    url: "https://livemusichalifax.ca/events/month/{month}/?ical=1",
-    region: "Halifax / Dartmouth",
-    defaultCity: "Halifax",
-    permission: "granted",
-    note:
-      "WordPress + The Events Calendar; publishes an iCal export. Best single source for HRM " +
-      "(Bearly's, The Local, Lion's Head, Economy Shoe Shop, Music Room…). Switched on 2026-11-10 at " +
-      "Stephen's request for the test site; still email the curator as a courtesy (template in docs/SOURCES.md).",
-  },
-];
+export const FEEDS: Feed[] = [];
+
+export { BLOCKED_HOSTS, isBlocked } from "./blocklist";
 
 /**
  * Hand-listed feeds plus everything the auto-finder discovered on venue and
@@ -70,7 +59,7 @@ export function allFeeds(): Feed[] {
   const known = new Set(FEEDS.map((f) => hostOf(f.url)));
   const discovered: Feed[] = process.env.DISABLE_DISCOVERED
     ? []
-    : pickOnePerSite(loadDiscovered().feeds.map((f) => f.key))
+    : pickOnePerSite(loadDiscovered().feeds.map((f) => f.key).filter((u) => !isBlocked(u)))
         .filter((url) => !known.has(hostOf(url)))
         .map((url) => {
           const found = loadDiscovered().feeds.find((f) => f.key === url)!;
