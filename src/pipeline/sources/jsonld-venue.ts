@@ -1,6 +1,7 @@
 import type { RawEvent, Source } from "../types";
 import { politeFetch } from "../polite-fetch";
 import { loadDiscovered } from "../../discovery/store";
+import { hostOf } from "../feeds";
 
 /**
  * Generic venue-website scraper. Many venue sites (Squarespace, Wix, WordPress
@@ -66,7 +67,11 @@ export function extractJsonLdEvents(html: string, pageUrl: string): RawEvent[] {
 
 /** VENUE_PAGES plus pages the auto-finder saw carrying Event JSON-LD. */
 function allPages(): { url: string }[] {
-  const discovered = process.env.DISABLE_DISCOVERED ? [] : loadDiscovered().jsonLdPages.map((f) => ({ url: f.key }));
+  // Sites that also publish a calendar feed are read through the feed (one request instead of one per event page).
+  const feedSites = new Set(loadDiscovered().feeds.map((f) => hostOf(f.key)));
+  const discovered = process.env.DISABLE_DISCOVERED
+    ? []
+    : loadDiscovered().jsonLdPages.filter((f) => !feedSites.has(hostOf(f.key))).map((f) => ({ url: f.key }));
   return [...new Map([...VENUE_PAGES, ...discovered].map((p) => [p.url, p])).values()];
 }
 

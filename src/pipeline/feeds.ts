@@ -12,6 +12,7 @@
 import { nsDayKey } from "../lib/time";
 import { loadDiscovered } from "../discovery/store";
 import { stableId } from "./normalize";
+import { NS_VENUES } from "./venues-ns";
 
 export type FeedKind =
   /** iCalendar (.ics) export: Google Calendar public URL, WordPress "?ical=1", Squarespace, etc. */
@@ -66,21 +67,50 @@ export const FEEDS: Feed[] = [
  * DISABLE_DISCOVERED=1 to ignore them.
  */
 export function allFeeds(): Feed[] {
-  const known = new Set(FEEDS.map((f) => f.url));
+  const known = new Set(FEEDS.map((f) => hostOf(f.url)));
   const discovered: Feed[] = process.env.DISABLE_DISCOVERED
     ? []
-    : loadDiscovered()
-        .feeds.filter((f) => !known.has(f.key))
-        .map((f) => ({
-          id: `auto-${stableId([f.key])}`,
-          name: f.label ?? new URL(f.key).host,
-          kind: "ical" as const,
-          url: f.key,
-          region: "auto-discovered",
-          permission: "granted" as const,
-          note: `Found by the auto-finder on ${f.foundOn} (first seen ${f.firstSeen})`,
-        }));
+    : pickOnePerSite(loadDiscovered().feeds.map((f) => f.key))
+        .filter((url) => !known.has(hostOf(url)))
+        .map((url) => {
+          const found = loadDiscovered().feeds.find((f) => f.key === url)!;
+          const venue = venueForSite(found.foundOn);
+          return {
+            id: `auto-${stableId([url])}`,
+            name: venue?.name ?? found.label ?? hostOf(url),
+            kind: "ical" as const,
+            url,
+            region: "auto-discovered",
+            permission: "granted" as const,
+            note: `Found by the auto-finder on ${found.foundOn} (first seen ${found.firstSeen})`,
+            // A venue's own calendar often leaves LOCATION blank: it's implied.
+            venue: venue ? { name: venue.name, address: venue.address, city: venue.city } : undefined,
+          };
+        });
   return [...FEEDS, ...discovered];
+}
+
+/** "www.oldtriangle.com" and "oldtriangle.com" are one site. Google Calendar feeds are keyed by calendar. */
+export function hostOf(url: string): string {
+  const u = new URL(url);
+  return u.hostname === "calendar.google.com" ? u.pathname : u.hostname.replace(/^www\./, "");
+}
+
+/**
+ * WordPress sites expose the same events through several export URLs
+ * (list, month, outlook variants). Keep one per site: the month export if
+ * present, since it covers whole months, else the shortest URL.
+ */
+export function pickOnePerSite(urls: string[]): string[] {
+  const bySite = new Map<string, string[]>();
+  for (const u of urls) bySite.set(hostOf(u), [...(bySite.get(hostOf(u)) ?? []), u]);
+  return [...bySite.values()].map((list) => list.find((u) => u.includes("{month}") && !u.includes("outlook")) ?? [...list].sort((a, b) => a.length - b.length)[0]);
+}
+
+/** The registry venue whose website is the site a feed was found on. */
+export function venueForSite(pageUrl: string) {
+  const host = hostOf(pageUrl);
+  return NS_VENUES.find((v) => v.website && hostOf(v.website) === host);
 }
 
 export function feedUrls(f: Feed, now = new Date()): string[] {

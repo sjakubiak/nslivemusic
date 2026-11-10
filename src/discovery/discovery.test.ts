@@ -48,3 +48,19 @@ describe("mergeFound", () => {
     expect(out[0]).toMatchObject({ firstSeen: "2026-09-01", lastSeen: "2026-11-10", foundOn: "p2" });
   });
 });
+
+describe("discovered feed clean-up", () => {
+  it("keeps one feed per site and maps venue sites to registry venues", async () => {
+    const { pickOnePerSite, venueForSite } = await import("../pipeline/feeds");
+    expect(
+      pickOnePerSite([
+        "https://oldtriangle.com/events/?ical=1",
+        "https://oldtriangle.com/events/month/?outlook-ical=1",
+        "https://www.oldtriangle.com/events/month/{month}/?ical=1",
+        "https://durtynellys.ca/events/list/?outlook-ical=1",
+        "https://durtynellys.ca/events/month/{month}/?ical=1",
+      ]),
+    ).toEqual(["https://www.oldtriangle.com/events/month/{month}/?ical=1", "https://durtynellys.ca/events/month/{month}/?ical=1"]);
+    expect(venueForSite("https://durtynellys.ca/events/")?.name).toBe("Durty Nelly's Irish Pub");
+  });
+});

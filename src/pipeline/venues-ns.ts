@@ -28,7 +28,7 @@ export interface RealVenue {
 export const NS_VENUES: RealVenue[] = [
   // Halifax: downtown
   { name: "The Old Triangle Irish Alehouse", aliases: ["Old Triangle"], address: "5136 Prince Street", city: "Halifax", website: "https://www.oldtriangle.com/" },
-  { name: "Durty Nelly's Irish Pub", aliases: ["Durty Nellys"], address: "1645 Argyle Street", city: "Halifax" },
+  { name: "Durty Nelly's Irish Pub", aliases: ["Durty Nellys"], address: "1645 Argyle Street", city: "Halifax", website: "https://durtynellys.ca/" },
   { name: "The Loose Cannon Scottish Public House", aliases: ["Loose Cannon"], address: "1566 Argyle Street", city: "Halifax", website: "http://theloosecannon.ca/" },
   { name: "Split Crow Pub", aliases: ["Split Crow"], address: "1855 Granville Street", city: "Halifax", website: "https://www.splitcrow.com/" },
   { name: "Bearly's House of Blues & Ribs", aliases: ["Bearlys", "Bearly's"], address: "1579 Grafton Street", city: "Halifax", website: "https://www.bearlys.ca/" },
@@ -60,7 +60,7 @@ export const NS_VENUES: RealVenue[] = [
   { name: "Spindrift Brewing", city: "Antigonish" },
   // Cape Breton (addresses to confirm)
   { name: "The Red Shoe Pub", aliases: ["Red Shoe"], city: "Mabou" },
-  { name: "Celtic Music Interpretive Centre", aliases: ["Celtic Music Centre"], city: "Judique" },
+  { name: "Celtic Music Interpretive Centre", aliases: ["Celtic Music Centre"], address: "5473 Route 19", city: "Judique", website: "http://www.celticmusiccentre.com/" },
   { name: "Daniel's Taphouse", aliases: ["Daniels Taphouse"], city: "Sydney" },
   { name: "Frolic'n Folk", aliases: ["Frolic n Folk"], city: "Iona" },
 ];
