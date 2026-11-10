@@ -14,7 +14,7 @@ import tls from "node:tls";
  * end at a trusted root and match the hostname.
  */
 const MISSING_CHAIN = new Set(["UNABLE_TO_GET_ISSUER_CERT_LOCALLY", "UNABLE_TO_VERIFY_LEAF_SIGNATURE"]);
-const intermediates = new Map<string, string>(); // host → PEM
+const intermediates = new Map<string, string[]>(); // host → PEM chain
 
 export function isMissingChainError(err: unknown): boolean {
   const code = (err as { cause?: { code?: string } })?.cause?.code ?? (err as { code?: string })?.code;
@@ -34,24 +34,48 @@ function issuerUrl(host: string): Promise<string | undefined> {
   });
 }
 
-async function intermediateFor(host: string): Promise<string> {
-  const cached = intermediates.get(host);
-  if (cached) return cached;
-  const url = await issuerUrl(host);
-  if (!url) throw new Error(`no CA Issuers URL in ${host}'s certificate`);
+let rootSubjects: Set<string> | undefined;
+function isTrustedRootIssuer(cert: crypto.X509Certificate): boolean {
+  rootSubjects ??= new Set(tls.rootCertificates.map((pem) => new crypto.X509Certificate(pem).subject));
+  return rootSubjects.has(cert.issuer) || cert.issuer === cert.subject;
+}
+
+async function download(url: string): Promise<crypto.X509Certificate> {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`${res.status} downloading intermediate from ${url}`);
   const buf = Buffer.from(await res.arrayBuffer());
-  // Usually DER; some CAs serve PEM.
-  const pem = buf.toString("utf8").includes("BEGIN CERTIFICATE") ? buf.toString("utf8") : new crypto.X509Certificate(buf).toString();
-  intermediates.set(host, pem);
-  return pem;
+  // Usually DER; some CAs serve PEM. (PKCS#7 bundles aren't handled.)
+  return new crypto.X509Certificate(buf.toString("utf8").includes("BEGIN CERTIFICATE") ? buf.toString("utf8") : buf);
+}
+
+/**
+ * Walk "CA Issuers" links upward until we reach a certificate issued by a
+ * trusted root (some chains have two intermediates, e.g. Sectigo → USERTrust).
+ */
+async function intermediatesFor(host: string): Promise<string[]> {
+  const cached = intermediates.get(host);
+  if (cached) return cached;
+  let url = await issuerUrl(host);
+  if (!url) throw new Error(`no CA Issuers URL in ${host}'s certificate`);
+  const chain: string[] = [];
+  for (let depth = 0; url && depth < 4; depth++) {
+    const cert = await download(url);
+    chain.push(cert.toString());
+    if (isTrustedRootIssuer(cert)) break;
+    url = cert.infoAccess?.match(/CA Issuers - URI:(\S+)/)?.[1];
+  }
+  console.log(
+    `[tls] ${host}: fetched ${chain.length} intermediate(s): ` +
+      chain.map((pem) => { const c = new crypto.X509Certificate(pem); return `${c.subject.split("\n").find((l) => l.startsWith("CN="))} <- ${c.issuer.split("\n").find((l) => l.startsWith("CN="))}`; }).join(" | "),
+  );
+  intermediates.set(host, chain);
+  return chain;
 }
 
 /** GET with the site's missing intermediate supplied. Follows up to 3 redirects. */
 export async function getWithFetchedChain(url: string, headers: Record<string, string>, redirects = 3): Promise<{ status: number; body: string }> {
   const u = new URL(url);
-  const ca = [...tls.rootCertificates, await intermediateFor(u.hostname)];
+  const ca = [...tls.rootCertificates, ...(await intermediatesFor(u.hostname))];
   return new Promise((resolve, reject) => {
     const req = https.get(u, { headers, ca, timeout: 20_000 }, (res) => {
       const loc = res.headers.location;
