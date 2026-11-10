@@ -34,7 +34,7 @@ describe("iCal feeds", () => {
     "LOCATION:Bearly's House of Blues & Ribs\\, 1579 Grafton St\\, Halifax\\, NS\\, B3J 2C3\\, Canada",
     "GEO:44.6452;-63.5752",
     "CATEGORIES:Blues",
-    "URL:https://livemusichalifax.ca/event/garrett-mason/",
+    "URL:https://calendar.example/event/garrett-mason/",
     "END:VEVENT",
     "BEGIN:VEVENT",
     "UID:weekly@x",
@@ -232,5 +232,18 @@ describe("feed URLs", () => {
     const { feedUrls } = await import("./feeds");
     const f = { id: "x", name: "x", kind: "ical" as const, url: "https://x/events/month/{month}/?ical=1", region: "", permission: "pending" as const, note: "" };
     expect(feedUrls(f, new Date("2026-12-15T12:00:00Z"))).toEqual(["https://x/events/month/2026-12/?ical=1", "https://x/events/month/2027-01/?ical=1"]);
+  });
+});
+
+describe("blocklist", () => {
+  it("never links to or fetches blocked sites", async () => {
+    const { isBlocked } = await import("./blocklist");
+    const { safeUrl } = await import("./normalize");
+    expect(isBlocked("https://livemusichalifax.ca/events/")).toBe(true);
+    expect(isBlocked("https://www.livemusichalifax.ca/x")).toBe(true);
+    expect(isBlocked("https://oldtriangle.com/")).toBe(false);
+    expect(safeUrl("https://livemusichalifax.ca/event/x/")).toBeUndefined();
+    expect(safeUrl("javascript:alert(1)")).toBeUndefined();
+    expect(safeUrl("https://oldtriangle.com/event/x/")).toBe("https://oldtriangle.com/event/x/");
   });
 });

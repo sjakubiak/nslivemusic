@@ -6,7 +6,6 @@ import { NS_VENUES } from "../pipeline/venues-ns";
  * that lists NS venues or events here.
  */
 export const LISTING_PAGES: string[] = [
-  "https://livemusichalifax.ca/events/list/",
   "https://www.novascotia.com/trip-ideas/stories/8-downtown-halifax-pubs-with-live-music",
   "https://novascotia.com/blog/enjoy-halifaxs-vibrant-live-music-scene-all-year-long/",
   "https://discoverhalifaxns.com/things-to-do/nightlife/where-to-see-live-music-in-halifax/",

@@ -1,3 +1,4 @@
+import { isBlocked } from "./blocklist";
 import { getWithFetchedChain, isMissingChainError } from "./tls-chain";
 /**
  * Fetch helper every web scraper must use. It:
@@ -67,6 +68,7 @@ async function getText(url: string): Promise<{ status: number; body: string }> {
 }
 
 export async function politeFetch(url: string): Promise<string> {
+  if (isBlocked(url)) throw new Error(`blocked host: ${new URL(url).hostname}`);
   if (!(await isAllowed(url))) throw new Error(`robots.txt disallows ${url}`);
   const host = new URL(url).host;
   const wait = (lastHit.get(host) ?? 0) + MIN_INTERVAL_MS - Date.now();

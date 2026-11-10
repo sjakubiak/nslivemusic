@@ -27,7 +27,7 @@ Planned: AI extraction for plain-text schedules, and web search for new venues. 
 | Eventbrite | `sources/eventbrite.ts` | `EVENTBRITE_TOKEN` + `EVENTBRITE_ORGANIZER_IDS` env vars on Render |
 | Facebook venue Pages | `sources/facebook-pages.ts` | A Meta app with App Review, plus each venue granting a Page token |
 
-To test a pending feed without marking it granted: `ENABLE_FEEDS=livemusichalifax-ical npm run ingest`.
+To test a pending feed without marking it granted: `ENABLE_FEEDS=<feed id> npm run ingest`.
 
 Events missing coordinates are geocoded with OpenStreetMap Nominatim (cached in `data/geocode-cache.json`). Set `SCRAPER_USER_AGENT` on Render to something with a contact address, e.g. `NSLiveMusicFinderBot/1.0 (+mailto:you@example.com)`.
 
@@ -35,8 +35,8 @@ Events missing coordinates are geocoded with OpenStreetMap Nominatim (cached in 
 
 ### Halifax / Dartmouth
 
-- **Live Music Halifax** (livemusichalifax.ca): a community calendar on WordPress + The Events Calendar, covering Bearly's, The Local, Lion's Head, Economy Shoe Shop, The Music Room, Obladee, Pacifico and more. It publishes an iCal export per month (`/events/month/2026-11/?ical=1`), which we confirmed uses `America/Halifax` times and "Venue, address, city" locations. **This is the biggest single win.** It's already in `feeds.ts` as `pending`: ask the curator, then flip it to `granted`. Its JSON API (`/wp-json/...`) is blocked by robots.txt, so use the iCal export.
-- Downtown pubs with regular live music (from Tourism NS's "8 downtown Halifax pubs with live music"): Old Triangle (7 nights/week), Durty Nelly's (5 nights/week), Split Crow, Bearly's (nearly nightly), Lower Deck, Loose Cannon, Carleton, Stubborn Goat, Auction House, plus 2037 Gottingen (Marquee, Seahorse, The Local) and Gus' Pub. Most of these post their schedules on Facebook/Instagram rather than on a calendar page, so the practical routes are the Live Music Halifax feed (which already lists many of them), Eventbrite/ticketing for the ticketed rooms, or manual entry.
+- **Blocked sites:** livemusichalifax.ca was reported on 2026-11-10 as serving a scam page that infected a visitor's browser. It and a few sites found through it are listed in `src/pipeline/blocklist.ts`, and the app never fetches or links to anything on that list.
+- Downtown pubs with regular live music (from Tourism NS's "8 downtown Halifax pubs with live music"): Old Triangle (7 nights/week), Durty Nelly's (5 nights/week), Split Crow, Bearly's (nearly nightly), Lower Deck, Loose Cannon, Carleton, Stubborn Goat, Auction House, plus 2037 Gottingen (Marquee, Seahorse, The Local) and Gus' Pub. Most of these post their schedules on Facebook/Instagram rather than on a calendar page, so the practical routes are Eventbrite/ticketing for the ticketed rooms, or manual entry.
 
 ### Annapolis Valley, Hants, Colchester
 

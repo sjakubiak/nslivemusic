@@ -1,3 +1,4 @@
+import { isBlocked } from "./blocklist";
 import crypto from "node:crypto";
 import type { EventType, MusicEvent } from "../lib/types";
 import { GENRES } from "../lib/types";
@@ -118,6 +119,18 @@ export function normaliseAddress(address = "", city = ""): string {
   return a.replace(/,\s*$/, "").trim();
 }
 
+/** Links shown to users: http(s) only, never a blocked site. */
+export function safeUrl(u?: string): string | undefined {
+  if (!u) return undefined;
+  try {
+    const url = new URL(u);
+    if (!/^https?:$/.test(url.protocol) || isBlocked(u)) return undefined;
+    return url.toString();
+  } catch {
+    return undefined;
+  }
+}
+
 export function stableId(parts: string[]): string {
   return crypto.createHash("sha1").update(parts.join("|").toLowerCase()).digest("hex").slice(0, 12);
 }
@@ -178,10 +191,10 @@ export function normaliseEvent(raw: RawEvent, now = new Date()): { event: MusicE
       eventType: raw.eventType ?? normaliseEventType(raw.category, title),
       genre: normaliseGenres(raw.genres),
       coverCharge: normaliseCover(raw.cover),
-      website: raw.website ?? venue?.website,
-      ticketUrl: raw.ticketUrl,
-      imageUrl: raw.imageUrl,
-      sourceUrl: raw.sourceUrl,
+      website: safeUrl(raw.website) ?? venue?.website,
+      ticketUrl: safeUrl(raw.ticketUrl),
+      imageUrl: safeUrl(raw.imageUrl),
+      sourceUrl: safeUrl(raw.sourceUrl) ?? "",
       verified: raw.verified ?? false,
       lastUpdated: now.toISOString(),
     },
