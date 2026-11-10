@@ -131,6 +131,10 @@ export function normaliseEvent(raw: RawEvent, now = new Date()): { event: MusicE
   const latitude = raw.latitude ?? venue?.latitude;
   const longitude = raw.longitude ?? venue?.longitude;
   if (latitude == null || longitude == null) return { event: null, reason: `no coordinates for venue "${raw.venueName}"` };
+  // Auto-discovered feeds can include touring dates elsewhere: keep Nova Scotia only.
+  if (latitude < 43.3 || latitude > 47.1 || longitude < -66.5 || longitude > -59.6) {
+    return { event: null, reason: `outside Nova Scotia: "${raw.title}" at ${raw.venueName}` };
+  }
 
   // ISO datetime with an explicit offset wins; otherwise date + local time.
   let start: Date | null = null;

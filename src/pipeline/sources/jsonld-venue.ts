@@ -1,5 +1,6 @@
 import type { RawEvent, Source } from "../types";
 import { politeFetch } from "../polite-fetch";
+import { loadDiscovered } from "../../discovery/store";
 
 /**
  * Generic venue-website scraper. Many venue sites (Squarespace, Wix, WordPress
@@ -63,15 +64,21 @@ export function extractJsonLdEvents(html: string, pageUrl: string): RawEvent[] {
   return out;
 }
 
+/** VENUE_PAGES plus pages the auto-finder saw carrying Event JSON-LD. */
+function allPages(): { url: string }[] {
+  const discovered = process.env.DISABLE_DISCOVERED ? [] : loadDiscovered().jsonLdPages.map((f) => ({ url: f.key }));
+  return [...new Map([...VENUE_PAGES, ...discovered].map((p) => [p.url, p])).values()];
+}
+
 export const jsonLdVenueSource: Source = {
   id: "jsonld-venue",
   name: "Venue websites (schema.org JSON-LD)",
   kind: "venue-website",
   termsNote: "Only pages listed in VENUE_PAGES, each ToS-checked; robots.txt enforced by politeFetch.",
-  enabled: () => VENUE_PAGES.length > 0,
+  enabled: () => allPages().length > 0,
   async fetch() {
     const out: RawEvent[] = [];
-    for (const p of VENUE_PAGES) {
+    for (const p of allPages()) {
       try {
         out.push(...extractJsonLdEvents(await politeFetch(p.url), p.url));
       } catch (err) {

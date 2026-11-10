@@ -1,0 +1,45 @@
+name: Auto-finder
+
+# Daily crawl of NS venue and listing sites for new event sources.
+# Commits data/discovered.json when the set of sources changes; Render then
+# redeploys from main and the next ingest picks the new sources up.
+on:
+  schedule:
+    - cron: "17 9 * * *" # 05:17 Halifax (summer) / 06:17 (winter)
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: auto-finder
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Crawl for event sources
+        run: npm run discover
+        env:
+          # Optional: lets the finder turn Eventbrite event links into organizers.
+          EVENTBRITE_TOKEN: ${{ secrets.EVENTBRITE_TOKEN }}
+          SCRAPER_USER_AGENT: "NSLiveMusicFinderBot/1.0 (+https://nslivemusic.onrender.com)"
+      - name: Commit new sources
+        run: |
+          if git diff --quiet -- data/discovered.json; then
+            echo "No changes to discovered sources."
+            exit 0
+          fi
+          git config user.name "nslivemusic auto-finder"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/discovered.json
+          git commit -m "Auto-finder: update discovered event sources"
+          git push

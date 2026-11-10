@@ -1,6 +1,6 @@
 import type { RawEvent, Source } from "../types";
 import type { Feed } from "../feeds";
-import { FEEDS, feedEnabled, feedUrls } from "../feeds";
+import { allFeeds, feedEnabled, feedUrls } from "../feeds";
 import { politeFetch } from "../polite-fetch";
 import { addDays, nsDayKey } from "../../lib/time";
 import { htmlToText, truncate } from "../text";
@@ -237,10 +237,10 @@ export const icalSource: Source = {
   name: "iCalendar feeds (venue & community calendars)",
   kind: "listing-site",
   termsNote: "Only feeds in feeds.ts with permission granted; robots.txt enforced by politeFetch.",
-  enabled: () => FEEDS.some((f) => f.kind === "ical" && feedEnabled(f)),
+  enabled: () => allFeeds().some((f) => f.kind === "ical" && feedEnabled(f)),
   async fetch() {
     const out: RawEvent[] = [];
-    for (const f of FEEDS.filter((f) => f.kind === "ical" && feedEnabled(f))) {
+    for (const f of allFeeds().filter((f) => f.kind === "ical" && feedEnabled(f))) {
       for (const url of feedUrls(f)) {
         try {
           const events = parseIcs(await politeFetch(url), f);

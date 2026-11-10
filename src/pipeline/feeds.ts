@@ -10,6 +10,8 @@
  * See docs/SOURCES.md for the outreach list and the email template.
  */
 import { nsDayKey } from "../lib/time";
+import { loadDiscovered } from "../discovery/store";
+import { stableId } from "./normalize";
 
 export type FeedKind =
   /** iCalendar (.ics) export: Google Calendar public URL, WordPress "?ical=1", Squarespace, etc. */
@@ -56,6 +58,30 @@ export const FEEDS: Feed[] = [
       "Stephen's request for the test site; still email the curator as a courtesy (template in docs/SOURCES.md).",
   },
 ];
+
+/**
+ * Hand-listed feeds plus everything the auto-finder discovered on venue and
+ * listing sites (data/discovered.json). Discovered feeds are published by the
+ * site itself for calendar apps to subscribe to, so they're on by default; set
+ * DISABLE_DISCOVERED=1 to ignore them.
+ */
+export function allFeeds(): Feed[] {
+  const known = new Set(FEEDS.map((f) => f.url));
+  const discovered: Feed[] = process.env.DISABLE_DISCOVERED
+    ? []
+    : loadDiscovered()
+        .feeds.filter((f) => !known.has(f.key))
+        .map((f) => ({
+          id: `auto-${stableId([f.key])}`,
+          name: f.label ?? new URL(f.key).host,
+          kind: "ical" as const,
+          url: f.key,
+          region: "auto-discovered",
+          permission: "granted" as const,
+          note: `Found by the auto-finder on ${f.foundOn} (first seen ${f.firstSeen})`,
+        }));
+  return [...FEEDS, ...discovered];
+}
 
 export function feedUrls(f: Feed, now = new Date()): string[] {
   if (!f.url.includes("{month}")) return [f.url];

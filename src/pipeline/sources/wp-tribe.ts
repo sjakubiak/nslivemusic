@@ -1,6 +1,6 @@
 import type { RawEvent, Source } from "../types";
 import type { Feed } from "../feeds";
-import { FEEDS, feedEnabled } from "../feeds";
+import { allFeeds, feedEnabled } from "../feeds";
 import { politeFetch } from "../polite-fetch";
 import { addDays, nsDayKey } from "../../lib/time";
 import { decodeEntities, htmlToText, truncate } from "../text";
@@ -72,11 +72,11 @@ export const wpTribeSource: Source = {
   name: "WordPress event calendars (The Events Calendar API)",
   kind: "listing-site",
   termsNote: "Only feeds in feeds.ts with permission granted; robots.txt enforced by politeFetch.",
-  enabled: () => FEEDS.some((f) => f.kind === "wp-tribe" && feedEnabled(f)),
+  enabled: () => allFeeds().some((f) => f.kind === "wp-tribe" && feedEnabled(f)),
   async fetch() {
     const out: RawEvent[] = [];
     const today = nsDayKey(new Date());
-    for (const f of FEEDS.filter((f) => f.kind === "wp-tribe" && feedEnabled(f))) {
+    for (const f of allFeeds().filter((f) => f.kind === "wp-tribe" && feedEnabled(f))) {
       const base = f.url.replace(/\/$/, "");
       let next: string | undefined =
         `${base}/wp-json/tribe/events/v1/events?per_page=50&start_date=${today}&end_date=${addDays(today, HORIZON_DAYS)}`;
