@@ -87,6 +87,8 @@ export function entryFromForm(f: Fields, source: string, today: string): ManualE
     confirmedOn: today,
   };
   if (biweekly) Object.assign(entry, { biweekly: true, from });
+  const monthWeeks = many(f.monthWeeks).map(Number).filter((n) => [1, 2, 3, 4, -1].includes(n));
+  if (monthWeeks.length) entry.monthWeeks = monthWeeks;
   // Drop empty optionals so stored rows stay tidy.
   for (const k of Object.keys(entry) as (keyof ManualEntry)[]) if (entry[k] === undefined) delete entry[k];
   return entry;

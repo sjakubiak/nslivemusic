@@ -524,7 +524,9 @@
       "end": "23:59",
       "category": "songwriters circle",
       "source": "https://www.bearlys.ca/calendar",
-      "confirmedOn": "2026-11-10"
+      "confirmedOn": "2026-11-10",
+      "cover": "PWYC",
+      "description": "Message Noah Tye at 2 PM the day of to get on the list."
     },
     {
       "title": "Garrett Mason's Peace and Love Festival",
@@ -581,12 +583,12 @@
         "TH"
       ],
       "biweekly": true,
-      "from": "2026-04-23",
+      "from": "2026-10-29",
       "start": "19:30",
       "end": "00:00",
       "category": "jam",
       "source": "https://downtownhalifax.ca/event/rox-live-presents-bands-night-out-live-crown-royal-stage",
-      "description": "Every second Thursday: a night for musicians to network, jam and take the mic, hosted by Sean. Book a stage spot through Rox Live.",
+      "description": "Every second Thursday: bands and jammers welcome, hosted by Sean Blackburn. Message Sean for a slot or just show up. Drink and pizza specials.",
       "confirmedOn": "2026-11-10"
     },
     {
@@ -629,6 +631,184 @@
       "cover": "Free",
       "category": "open mic",
       "source": "https://www.theloosecannon.ca/entertainment (start time from Stephen, 2026-11-10)",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Thank You Open Mic for Tyler Cox",
+      "venue": "Propeller Brewing Taproom",
+      "address": "2015 Gottingen Street",
+      "city": "Halifax",
+      "date": "2026-11-10",
+      "start": "19:00",
+      "end": "22:00",
+      "category": "open mic",
+      "description": "Tribute night for Tyler Cox's support of the open mic scene. Hosted by Tommy Bragnalo.",
+      "source": "Open mic list compiled from the Halifax open mic community group, sent by Stephen 2026-11-10",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Celtic Corner Open Mic",
+      "venue": "Celtic Corner Pub",
+      "city": "Dartmouth",
+      "weekly": [
+        "TU"
+      ],
+      "start": "20:00",
+      "category": "open mic",
+      "description": "Hosted by Stu Anthony. A true walk-up open mic: show up, first come.",
+      "source": "Open mic list compiled from the Halifax open mic community group, sent by Stephen 2026-11-10",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Open Mic Night with Open Mic Guy",
+      "venue": "Oasis Pub & Eatery",
+      "address": "5661 Spring Garden Road",
+      "city": "Halifax",
+      "weekly": [
+        "WE"
+      ],
+      "start": "20:00",
+      "end": "23:00",
+      "category": "open mic",
+      "description": "Full backline: play solo or with a backing band. Sign up by email through Open Mic Guy.",
+      "source": "Open mic list compiled from the Halifax open mic community group, sent by Stephen 2026-11-10",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Open Mic with Tony Trimper",
+      "venue": "The Beaver's Den",
+      "address": "6273 Quinpool Road",
+      "city": "Halifax",
+      "weekly": [
+        "TH"
+      ],
+      "start": "20:00",
+      "end": "23:00",
+      "category": "open mic",
+      "source": "Open mic list compiled from the Halifax open mic community group, sent by Stephen 2026-11-10",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "S.O.S. – Songwriters On Sundays",
+      "venue": "The Beaver's Den Dartmouth",
+      "address": "16 Portland Street",
+      "city": "Dartmouth",
+      "weekly": [
+        "SU"
+      ],
+      "start": "14:30",
+      "end": "18:00",
+      "category": "songwriters circle",
+      "description": "Hosted by Harbour B Brat.",
+      "source": "Open mic list compiled from the Halifax open mic community group, sent by Stephen 2026-11-10",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Songwriters Circle",
+      "venue": "The Pink Piano Cafe & Lounge",
+      "address": "585 Sackville Drive",
+      "city": "Lower Sackville",
+      "weekly": [
+        "WE"
+      ],
+      "monthWeeks": [
+        1,
+        3
+      ],
+      "start": "19:00",
+      "category": "songwriters circle",
+      "description": "1st and 3rd Wednesdays, doors 6:30. Hosted by Songwriters From Here And Away.",
+      "source": "Open mic list compiled from the Halifax open mic community group, sent by Stephen 2026-11-10",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Sackville Open Stage",
+      "venue": "The Pink Piano Cafe & Lounge",
+      "address": "585 Sackville Drive",
+      "city": "Lower Sackville",
+      "weekly": [
+        "WE"
+      ],
+      "monthWeeks": [
+        2,
+        4
+      ],
+      "start": "19:00",
+      "cover": "PWYC ($5 suggested)",
+      "category": "open mic",
+      "description": "2nd and 4th Wednesdays, doors 6:30. All ages: music, comedy, poetry and more. Hosted by Songwriters From Here And Away.",
+      "source": "Open mic list compiled from the Halifax open mic community group, sent by Stephen 2026-11-10",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Cruikshanks Unplugged",
+      "venue": "Cruikshanks Funeral Home",
+      "address": "2666 Windsor Street",
+      "city": "Halifax",
+      "weekly": [
+        "WE"
+      ],
+      "monthWeeks": [
+        -1
+      ],
+      "start": "18:30",
+      "end": "21:30",
+      "category": "open mic",
+      "description": "Last Wednesday of the month, hosted by Noah Tye. The list opens the night before at 8 PM (message Noah) and fills up fast.",
+      "source": "Open mic list compiled from the Halifax open mic community group, sent by Stephen 2026-11-10",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Open Mic at 222",
+      "venue": "222 Waterfront Drive, Suite 103",
+      "address": "222 Waterfront Drive",
+      "city": "Bedford",
+      "weekly": [
+        "TH"
+      ],
+      "monthWeeks": [
+        1
+      ],
+      "start": "18:30",
+      "end": "21:00",
+      "cover": "$10 suggested",
+      "category": "open mic",
+      "description": "First Thursday of the month, hosted by Sarah Benoit. Music, poetry, storytelling and movement; tea and snacks. Floor opens around 7.",
+      "source": "Open mic list compiled from the Halifax open mic community group, sent by Stephen 2026-11-10",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Public House Open Mic with James",
+      "venue": "The Public House 1875",
+      "address": "72 Inglis Street",
+      "city": "Truro",
+      "weekly": [
+        "SU"
+      ],
+      "biweekly": true,
+      "from": "2026-11-22",
+      "start": "18:00",
+      "end": "21:00",
+      "category": "open mic",
+      "description": "Every second Sunday, hosted by James Rogers. House guitar; keyboard if you ask ahead. Just show up.",
+      "source": "Open mic list compiled from the Halifax open mic community group, sent by Stephen 2026-11-10",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "All Ages Open Mic",
+      "venue": "The Commune",
+      "address": "563 Prince Street",
+      "city": "Truro",
+      "weekly": [
+        "MO"
+      ],
+      "biweekly": true,
+      "from": "2026-10-26",
+      "start": "18:00",
+      "end": "21:00",
+      "category": "open mic",
+      "description": "Every other Monday, hosted by Meghan Lynn Music. All ages, all instruments; backing tracks OK.",
+      "source": "Open mic list compiled from the Halifax open mic community group, sent by Stephen 2026-11-10",
       "confirmedOn": "2026-11-10"
     }
   ]

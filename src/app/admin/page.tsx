@@ -14,14 +14,15 @@ type Props = { searchParams: Promise<Record<string, string | undefined>> };
 
 const KIND_LABEL = { new: "New night", edit: "Change", remove: "Says it has stopped", report: "Problem report" } as const;
 
-function when(e: Pick<ManualEntry, "weekly" | "start" | "end" | "biweekly">): string {
+function when(e: Pick<ManualEntry, "weekly" | "start" | "end" | "biweekly" | "monthWeeks">): string {
   const days = (e.weekly ?? []).map((d) => DAYS.find(([c]) => c === d)?.[1] ?? d).join(", ");
-  return `${e.biweekly ? "Every other " : "Every "}${days} · ${e.start}${e.end ? `–${e.end}` : ""}`;
+  const nth = e.monthWeeks?.length ? `${e.monthWeeks.map((w) => (w === -1 ? "last" : ["", "1st", "2nd", "3rd", "4th"][w])).join(" & ")} ` : "";
+  return `${e.biweekly ? "Every other " : nth ? `The ${nth}` : "Every "}${days} · ${e.start}${e.end ? `–${e.end}` : ""}`;
 }
 
 const FIELDS: [keyof ManualEntry, string][] = [
   ["title", "Name"], ["venue", "Venue"], ["address", "Address"], ["city", "Town"], ["weekly", "Days"], ["start", "Starts"], ["end", "Ends"],
-  ["biweekly", "Every other week"], ["from", "Upcoming date"], ["category", "Type"], ["cover", "Cover"], ["website", "Link"], ["description", "Description"],
+  ["biweekly", "Every other week"], ["monthWeeks", "Weeks of month"], ["from", "Upcoming date"], ["category", "Type"], ["cover", "Cover"], ["website", "Link"], ["description", "Description"],
 ];
 
 function changes(before: ManualEntry | null | undefined, after: ManualEntry | null | undefined) {

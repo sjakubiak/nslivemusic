@@ -21,6 +21,8 @@ export interface ManualEntry {
   weekly?: string[];
   /** Recurring: only every other week, counted from `from`. */
   biweekly?: boolean;
+  /** Recurring: only these weeks of the month (1-4, -1 = last), e.g. [2, 4] for 2nd and 4th. */
+  monthWeeks?: number[];
   /** Recurring: first and last dates the series runs (inclusive). */
   from?: string;
   until?: string;
@@ -57,6 +59,7 @@ export function expandManual(entries: (ManualEntry & { listingId?: string })[], 
         if (e.from && day < e.from) continue;
         if (e.until && day > e.until) break;
         if (!wanted.includes((todayWd + i) % 7)) continue;
+        if (e.monthWeeks?.length && !e.monthWeeks.some((w) => weekOfMonthMatches(day, w))) continue;
         if (e.biweekly) {
           const weeks = Math.floor((Date.parse(day) - Date.parse(anchor)) / (7 * 86_400_000));
           if (weeks % 2 !== 0) continue;
@@ -105,3 +108,10 @@ export const manualSource: Source = {
     return expandManual(live.map((l) => ({ ...l.entry!, listingId: l.id })));
   },
 };
+
+/** "2026-11-25" is the 4th and the last Wednesday of its month. */
+export function weekOfMonthMatches(day: string, week: number): boolean {
+  const [y, m, d] = day.split("-").map(Number);
+  if (week === -1) return d + 7 > new Date(Date.UTC(y, m, 0)).getUTCDate();
+  return Math.ceil(d / 7) === week;
+}
