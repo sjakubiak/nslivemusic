@@ -25,6 +25,18 @@ describe("suggestion form", () => {
   });
 });
 
+describe("weeks of the month", () => {
+  it("matches nth and last weekdays", async () => {
+    const { weekOfMonthMatches, expandManual } = await import("../pipeline/sources/manual");
+    expect(weekOfMonthMatches("2026-11-04", 1)).toBe(true);
+    expect(weekOfMonthMatches("2026-11-25", 4)).toBe(true);
+    expect(weekOfMonthMatches("2026-11-25", -1)).toBe(true);
+    expect(weekOfMonthMatches("2026-11-18", -1)).toBe(false);
+    const raw = expandManual([{ ...base, weekly: ["WE"], monthWeeks: [2, 4], source: "t", confirmedOn: "2026-11-10" }], new Date("2026-11-10T16:00:00Z"));
+    expect(raw.map((r) => r.date)).toEqual(["2026-11-11", "2026-11-25", "2026-12-09"]);
+  });
+});
+
 describe("listings store (local file)", () => {
   it("starts from the seed file, and nothing goes live without approval", async () => {
     const seeds = loadSeeds();

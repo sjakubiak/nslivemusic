@@ -45,6 +45,14 @@ export default function ListingFields({ entry }: { entry?: Partial<ManualEntry> 
       <label className="check span-2">
         <input type="checkbox" name="biweekly" defaultChecked={e.biweekly} /> Every other week only
       </label>
+      <fieldset className="span-2 days">
+        <legend>Only some weeks of the month? (leave blank for every week)</legend>
+        {([[1, "1st"], [2, "2nd"], [3, "3rd"], [4, "4th"], [-1, "Last"]] as const).map(([n, label]) => (
+          <label key={n} className="day">
+            <input type="checkbox" name="monthWeeks" value={n} defaultChecked={e.monthWeeks?.includes(n)} /> {label}
+          </label>
+        ))}
+      </fieldset>
       <label>
         If every other week: date of an upcoming one
         <input type="date" name="from" defaultValue={e.from} />
