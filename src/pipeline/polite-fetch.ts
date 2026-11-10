@@ -57,7 +57,7 @@ export async function politeFetch(url: string): Promise<string> {
   const wait = (lastHit.get(host) ?? 0) + MIN_INTERVAL_MS - Date.now();
   if (wait > 0) await new Promise((r) => setTimeout(r, wait));
   lastHit.set(host, Date.now());
-  const res = await fetch(url, { headers: { "User-Agent": USER_AGENT, Accept: "text/html,application/json" } });
+  const res = await fetch(url, { headers: { "User-Agent": USER_AGENT, Accept: "text/html,application/json,text/calendar;q=0.9,*/*;q=0.5" } });
   if (!res.ok) throw new Error(`${res.status} fetching ${url}`);
   return res.text();
 }

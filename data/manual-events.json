@@ -1,0 +1,4 @@
+{
+  "_readme": "Hand-entered events. Add one-off shows with \"date\", or weekly nights with \"weekly\": [\"TU\"]. Record where you confirmed it in \"source\" and when in \"confirmedOn\". Example entry is in docs/SOURCES.md.",
+  "events": []
+}

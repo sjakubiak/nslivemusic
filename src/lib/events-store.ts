@@ -10,9 +10,24 @@ import type { MusicEvent } from "./types";
  */
 const DB_PATH = path.join(process.cwd(), "data", "events.json");
 
+interface Store {
+  generatedAt?: string;
+  /** True when fictional sample events are included (no real source on yet). */
+  sampleData?: boolean;
+  events: MusicEvent[];
+}
+
+function read(): Store {
+  if (!fs.existsSync(DB_PATH)) return { events: [] };
+  return JSON.parse(fs.readFileSync(DB_PATH, "utf8")) as Store;
+}
+
 export function getAllEvents(): MusicEvent[] {
-  if (!fs.existsSync(DB_PATH)) return [];
-  return JSON.parse(fs.readFileSync(DB_PATH, "utf8")).events as MusicEvent[];
+  return read().events;
+}
+
+export function isSampleData(): boolean {
+  return read().sampleData ?? true;
 }
 
 export function getEventById(id: string): MusicEvent | undefined {
