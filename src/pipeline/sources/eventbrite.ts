@@ -97,10 +97,21 @@ export const eventbriteSource: Source = {
       let continuation: string | undefined;
       try {
         for (let page = 0; page < 10; page++) {
-          const qs = new URLSearchParams({ status: "live", expand: "venue,ticket_availability,category,subcategory", page_size: "50" });
-          if (continuation) qs.set("continuation", continuation);
-          const res = await fetch(`${API}/organizers/${id}/events/?${qs}`, { headers });
-          if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+          // Try the rich query first; if Eventbrite rejects a parameter, fall back to the
+          // minimal documented one and log why.
+          const attempts: Record<string, string>[] = [
+            { status: "live", expand: "venue,ticket_availability,category,subcategory", only_public: "true" },
+            { status: "live", expand: "venue" },
+          ];
+          let res: Response | undefined;
+          for (const params of attempts) {
+            const qs = new URLSearchParams(params);
+            if (continuation) qs.set("continuation", continuation);
+            res = await fetch(`${API}/organizers/${id}/events/?${qs}`, { headers });
+            if (res.ok) break;
+            console.warn(`[eventbrite] organizer ${id} (${qs}): ${res.status} ${(await res.text()).slice(0, 300)}`);
+          }
+          if (!res?.ok) throw new Error(`${res?.status} ${res?.statusText}`);
           const body = (await res.json()) as { events: EbEvent[]; pagination?: { has_more_items?: boolean; continuation?: string } };
           for (const e of body.events) {
             const r = mapEventbriteEvent(e);
