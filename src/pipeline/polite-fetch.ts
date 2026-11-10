@@ -67,9 +67,20 @@ async function getText(url: string): Promise<{ status: number; body: string }> {
   }
 }
 
+/**
+ * A venue's public Google Calendar address (".../calendar/ical/<id>/public/basic.ics")
+ * exists for calendar apps to subscribe to. Google's robots.txt covers its crawlable
+ * calendar pages; fetching a published subscription feed is what every calendar app
+ * does, so robots.txt isn't consulted for these. Approved by Stephen 2026-11-10.
+ */
+export function isPublicCalendarSubscription(url: string): boolean {
+  const u = new URL(url);
+  return u.hostname === "calendar.google.com" && /^\/calendar\/ical\/[^/]+\/public\/basic\.ics$/.test(u.pathname);
+}
+
 export async function politeFetch(url: string): Promise<string> {
   if (isBlocked(url)) throw new Error(`blocked host: ${new URL(url).hostname}`);
-  if (!(await isAllowed(url))) throw new Error(`robots.txt disallows ${url}`);
+  if (!isPublicCalendarSubscription(url) && !(await isAllowed(url))) throw new Error(`robots.txt disallows ${url}`);
   const host = new URL(url).host;
   const wait = (lastHit.get(host) ?? 0) + MIN_INTERVAL_MS - Date.now();
   if (wait > 0) await new Promise((r) => setTimeout(r, wait));

@@ -12,7 +12,7 @@ Until at least one real source returns events, the app keeps showing the fiction
 - **Pages with schema.org Event data.**
 - **Eventbrite organizers:** read straight from `/o/` links, or resolved from `/e/` event links through the API. The latter needs the `EVENTBRITE_TOKEN` repository secret.
 
-Discovered sources are used by the next ingest automatically. Set `DISABLE_DISCOVERED=1` to ignore them. The finder goes through `politeFetch` (robots.txt, 5 seconds per host), caps pages per site, and never crawls social media or ticketing sites. Events outside Nova Scotia are dropped. To widen the net, add pages to `seeds.ts`.
+Discovered sources are used by the next ingest automatically. Public Google Calendar subscription addresses (`/calendar/ical/<id>/public/basic.ics`) are fetched even though Google's robots.txt covers calendar pages, because they're published for calendar apps to subscribe to (decided 2026-11-10). Set `DISABLE_DISCOVERED=1` to ignore them. The finder goes through `politeFetch` (robots.txt, 5 seconds per host), caps pages per site, and never crawls social media or ticketing sites. Events outside Nova Scotia are dropped. To widen the net, add pages to `seeds.ts`.
 
 Planned: AI extraction for plain-text schedules, and web search for new venues. Each needs an API key.
 
