@@ -37,7 +37,7 @@ Destination Cape Breton (cbisland.com) has a live music and ceilidh listing: Cel
 ### Province-wide
 
 - **Tourism Nova Scotia** (novascotia.com/all-events) lists festivals and some recurring music. There's no export on the page; ask about a partner feed.
-- **Eventbrite**: the official API only lists events by organizer (there's no search), so collect the organizer IDs of NS venues and promoters that sell through Eventbrite.
+- **Eventbrite**: the official API only lists events by organizer (there's no search). Starting organizers are in `DEFAULT_ORGANIZERS` in `sources/eventbrite.ts` (Mill Cove Brew Pub, Monte's Showbar Grill). Add more with the `EVENTBRITE_ORGANIZER_IDS` env var. Non-music Eventbrite events are listed as "Other Events". The token must be the **Private token** from eventbrite.com/platform/api-keys.
 - **Songkick / Bandsintown**: their APIs are partner-only or artist-scoped, so they're not useful for venue listings without a partnership.
 
 ## Facebook: what's realistic

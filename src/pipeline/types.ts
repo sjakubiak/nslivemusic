@@ -17,6 +17,8 @@ export interface RawEvent {
   startTime?: string;
   endTime?: string;
   description?: string;
+  /** Set by sources that know an event isn't music (e.g. Eventbrite's category). */
+  eventType?: import("../lib/types").EventType;
   /** Free-text category from the source, e.g. "Open Mic Night", "Trad session". */
   category?: string;
   genres?: string[];
