@@ -171,7 +171,7 @@ export function normaliseEvent(raw: RawEvent, now = new Date()): { event: MusicE
       startDateTime: start.toISOString(),
       endDateTime: end?.toISOString(),
       description: (raw.description ?? "").trim(),
-      eventType: normaliseEventType(raw.category, title),
+      eventType: raw.eventType ?? normaliseEventType(raw.category, title),
       genre: normaliseGenres(raw.genres),
       coverCharge: normaliseCover(raw.cover),
       website: raw.website ?? venue?.website,

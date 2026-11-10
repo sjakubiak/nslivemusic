@@ -149,6 +149,9 @@ describe("Eventbrite and Facebook mappers", () => {
     expect(normaliseEvent(r, NOW).event!.coverCharge).toBe(25);
     expect(normaliseEvent(r, NOW).event!.eventType).toBe("JAM_SESSION");
     expect(mapEventbriteEvent({ ...base, online_event: true })).toBeNull();
+    const comedy = mapEventbriteEvent({ ...base, name: { text: "Comedy Open Mic" }, category_id: "105", category: { name: "Performing & Visual Arts" } })!;
+    expect(normaliseEvent(comedy, NOW).event!.eventType).toBe("OTHER");
+    expect(normaliseEvent(mapEventbriteEvent({ ...base, category_id: "103" })!, NOW).event!.eventType).toBe("JAM_SESSION");
     expect(mapEventbriteEvent({ ...base, venue: { ...base.venue, address: { ...base.venue.address, region: "NB" } } })).toBeNull();
   });
   it("normalises Graph API offsets", () => {
