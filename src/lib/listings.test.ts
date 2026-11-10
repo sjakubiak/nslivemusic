@@ -25,6 +25,19 @@ describe("suggestion form", () => {
   });
 });
 
+describe("dedupe and hand-entered nights", () => {
+  it("keeps two different listings at the same address and time", async () => {
+    const { isDuplicate } = await import("../pipeline/dedupe");
+    const ev = (id: string, listingId: string, title: string) => ({
+      id, listingId, title, venueName: `Inn on Prince ${id}`, address: "437 Prince Street", city: "Truro", province: "NS" as const,
+      latitude: 45.36, longitude: -63.28, startDateTime: "2026-11-12T23:00:00.000Z", description: "", eventType: "LIVE_MUSIC" as const,
+      sourceUrl: "", verified: true, lastUpdated: "",
+    });
+    expect(isDuplicate(ev("a", "seed-1", "Showcase A"), ev("b", "seed-2", "Showcase B"))).toBe(false);
+    expect(isDuplicate(ev("a", "seed-1", "Showcase A"), { ...ev("b", "seed-1", "Showcase A"), listingId: undefined } as never)).toBe(true);
+  });
+});
+
 describe("weeks of the month", () => {
   it("matches nth and last weekdays", async () => {
     const { weekOfMonthMatches, expandManual } = await import("../pipeline/sources/manual");
