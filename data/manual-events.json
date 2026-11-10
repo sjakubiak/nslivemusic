@@ -616,6 +616,20 @@
       "description": "19+ room.",
       "source": "https://villagetaphouse.ca/village-taphouse-events/ (weekly per Stephen, 2026-11-10)",
       "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Tuesday Open Mic Night",
+      "venue": "The Loose Cannon Scottish Public House",
+      "address": "1566 Argyle Street",
+      "city": "Halifax",
+      "weekly": [
+        "TU"
+      ],
+      "start": "21:00",
+      "cover": "Free",
+      "category": "open mic",
+      "source": "https://www.theloosecannon.ca/entertainment (start time from Stephen, 2026-11-10)",
+      "confirmedOn": "2026-11-10"
     }
   ]
 }
