@@ -20,6 +20,14 @@ Not planned: AI reading of venue pages (decided 2026-11-10). Web search for new 
 
 `data/manual-events.json` holds 34 regular nights across the province (open mics, jams, trad sessions, ceilidhs, kitchen parties), gathered on 2026-11-10 from the venues' own pages, Annapolis Valley Events (valleyevents.ca) and Music Cape Breton's daily calendar (musiccapebreton.com), which also covers mainland sessions. Venues that already have a calendar feed (Old Triangle, Durty Nelly's, Split Crow, Celtic Music Interpretive Centre) are left out to avoid duplicates. Ingest warns when an entry hasn't been re-checked for 90 days. Re-check those sources and update `confirmedOn`, and remove nights that have stopped. Many rural sessions are seasonal.
 
+## Suggestions and the admin page
+
+Anyone can add a regular night at `/suggest` (the "+ Add an event" link in the header). They can also suggest a change, or say a night has stopped, from any hand-entered event's page. Events from calendar feeds and Eventbrite get a "Report a problem" link instead. Nothing goes live until it's approved at `/admin`, where the admin also edits, adds and removes nights directly. An approved change triggers a fresh ingest, so the site updates within about a minute.
+
+- **Storage:** the Supabase project "nslivemusic", table `listings` (`docs/supabase-listings.sql`, RLS on with no public access). `data/manual-events.json` is the starting list. A stored row with the same id replaces a starting entry. Without the Supabase settings, the app falls back to `data/listings.json`, which is fine locally but is wiped on every Render deploy.
+- **Render env vars:** `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (the project's secret key), and `ADMIN_PASSWORD`.
+- **Spam protection:** same-origin form posts only, a hidden honeypot field, 8 suggestions per hour per IP, 10 login attempts per 15 minutes, length limits, and links restricted to http(s) and checked against the blocklist.
+
 ## How to switch a source on
 
 | Source | Code | What you need |

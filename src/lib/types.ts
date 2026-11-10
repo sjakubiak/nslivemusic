@@ -47,4 +47,6 @@ export interface MusicEvent {
   sourceUrl: string;
   verified: boolean;
   lastUpdated: string;
+  /** Hand-entered regular nights: the listing behind it, for "suggest a change". */
+  listingId?: string;
 }
