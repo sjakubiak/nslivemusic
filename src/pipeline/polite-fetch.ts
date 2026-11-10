@@ -1,3 +1,4 @@
+import { getWithFetchedChain, isMissingChainError } from "./tls-chain";
 /**
  * Fetch helper every web scraper must use. It:
  *   - identifies the bot with a descriptive User-Agent,
@@ -42,13 +43,27 @@ export async function isAllowed(url: string): Promise<boolean> {
   const u = new URL(url);
   if (!robotsCache.has(u.origin)) {
     try {
-      const res = await fetch(`${u.origin}/robots.txt`, { headers: { "User-Agent": USER_AGENT } });
-      robotsCache.set(u.origin, res.ok ? parseRobots(await res.text()) : []);
+      const res = await getText(`${u.origin}/robots.txt`);
+      robotsCache.set(u.origin, res.status >= 200 && res.status < 300 ? parseRobots(res.body) : []);
     } catch {
       robotsCache.set(u.origin, []);
     }
   }
   return !robotsCache.get(u.origin)!.some((p) => u.pathname.startsWith(p));
+}
+
+/** fetch(), plus a browser-style retry for sites that omit their intermediate certificate. */
+async function getText(url: string): Promise<{ status: number; body: string }> {
+  const headers = { "User-Agent": USER_AGENT, Accept: "text/html,application/json,text/calendar;q=0.9,*/*;q=0.5" };
+  try {
+    const res = await fetch(url, { headers });
+    return { status: res.status, body: await res.text() };
+  } catch (err) {
+    if (isMissingChainError(err)) return getWithFetchedChain(url, headers);
+    // Node's "fetch failed" hides the real reason (DNS, TLS certificate chain, reset…).
+    const cause = (err as { cause?: { code?: string; message?: string } }).cause;
+    throw new Error(`fetch failed: ${cause?.code ?? ""} ${cause?.message ?? (err as Error).message}`.trim());
+  }
 }
 
 export async function politeFetch(url: string): Promise<string> {
@@ -57,14 +72,7 @@ export async function politeFetch(url: string): Promise<string> {
   const wait = (lastHit.get(host) ?? 0) + MIN_INTERVAL_MS - Date.now();
   if (wait > 0) await new Promise((r) => setTimeout(r, wait));
   lastHit.set(host, Date.now());
-  let res: Response;
-  try {
-    res = await fetch(url, { headers: { "User-Agent": USER_AGENT, Accept: "text/html,application/json,text/calendar;q=0.9,*/*;q=0.5" } });
-  } catch (err) {
-    // Node's "fetch failed" hides the real reason (DNS, TLS certificate chain, reset…).
-    const cause = (err as { cause?: { code?: string; message?: string } }).cause;
-    throw new Error(`fetch failed: ${cause?.code ?? ""} ${cause?.message ?? (err as Error).message}`.trim());
-  }
-  if (!res.ok) throw new Error(`${res.status} fetching ${url}`);
-  return res.text();
+  const res = await getText(url);
+  if (res.status < 200 || res.status >= 300) throw new Error(`${res.status} fetching ${url}`);
+  return res.body;
 }
