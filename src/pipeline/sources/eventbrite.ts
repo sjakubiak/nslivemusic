@@ -1,5 +1,6 @@
 import type { RawEvent, Source } from "../types";
 import { htmlToText, truncate } from "../text";
+import { loadDiscovered } from "../../discovery/store";
 
 /**
  * Eventbrite, official API only (https://www.eventbrite.com/platform/api).
@@ -77,7 +78,9 @@ export function mapEventbriteEvent(e: EbEvent): RawEvent | null {
 
 const organizerIds = () => {
   const env = (process.env.EVENTBRITE_ORGANIZER_IDS ?? "").split(",").map((s) => s.trim()).filter(Boolean);
-  return env.length ? env : Object.keys(DEFAULT_ORGANIZERS);
+  if (env.length) return env;
+  const discovered = process.env.DISABLE_DISCOVERED ? [] : loadDiscovered().eventbriteOrganizers.map((f) => f.key);
+  return [...new Set([...Object.keys(DEFAULT_ORGANIZERS), ...discovered])];
 };
 
 export const eventbriteSource: Source = {

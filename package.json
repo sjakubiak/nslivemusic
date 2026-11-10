@@ -9,7 +9,8 @@
     "build": "next build",
     "start": "next start",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "discover": "tsx src/discovery/run.ts"
   },
   "dependencies": {
     "leaflet": "^1.9.4",

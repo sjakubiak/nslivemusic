@@ -4,6 +4,18 @@ Where real Nova Scotia live-music listings come from, how the app collects each 
 
 Until at least one real source returns events, the app keeps showing the fictional sample data (and the "Sample data" badge). As soon as a real source produces events, sample data turns off automatically (`SAMPLE_DATA=auto`).
 
+## Auto-finder
+
+`npm run discover` (run daily by the "Auto-finder" GitHub Action) crawls the listing pages and venue websites in `src/discovery/seeds.ts`, follows links from listings to venue sites and from venue home pages to their event pages, and records what it finds in `data/discovered.json`:
+
+- **Calendar feeds:** `<link type="text/calendar">`, `.ics` and `webcal:` links, embedded Google Calendars (turned into their public iCal address) and WordPress Events Calendar sites (turned into their month export).
+- **Pages with schema.org Event data.**
+- **Eventbrite organizers:** read straight from `/o/` links, or resolved from `/e/` event links through the API. The latter needs the `EVENTBRITE_TOKEN` repository secret.
+
+Discovered sources are used by the next ingest automatically. Set `DISABLE_DISCOVERED=1` to ignore them. The finder goes through `politeFetch` (robots.txt, 5 seconds per host), caps pages per site, and never crawls social media or ticketing sites. Events outside Nova Scotia are dropped. To widen the net, add pages to `seeds.ts`.
+
+Planned: AI extraction for plain-text schedules, and web search for new venues. Each needs an API key.
+
 ## How to switch a source on
 
 | Source | Code | What you need |
