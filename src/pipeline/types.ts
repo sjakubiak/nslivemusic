@@ -29,6 +29,8 @@ export interface RawEvent {
   imageUrl?: string;
   /** Venue-run or official API sources are considered verified. */
   verified?: boolean;
+  /** Hand-entered nights: the listing people can suggest changes to. */
+  listingId?: string;
 }
 
 export interface Source {

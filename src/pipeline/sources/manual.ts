@@ -1,8 +1,7 @@
-import fs from "node:fs";
-import path from "node:path";
 import type { RawEvent, Source } from "../types";
 import { addDays, nsDayKey, nsWeekday } from "../../lib/time";
 import { HORIZON_DAYS } from "./ical";
+import { liveListings, loadSeeds } from "../../lib/listings";
 
 /**
  * Hand-entered events: the practical route for venues that only post on
@@ -38,11 +37,10 @@ export interface ManualEntry {
   confirmedOn: string;
 }
 
-const FILE = path.join(process.cwd(), "data", "manual-events.json");
 const DAY_CODES = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
 const STALE_DAYS = 90;
 
-export function expandManual(entries: ManualEntry[], now = new Date()): RawEvent[] {
+export function expandManual(entries: (ManualEntry & { listingId?: string })[], now = new Date()): RawEvent[] {
   const today = nsDayKey(now);
   const horizon = addDays(today, HORIZON_DAYS);
   const out: RawEvent[] = [];
@@ -87,27 +85,23 @@ export function expandManual(entries: ManualEntry[], now = new Date()): RawEvent
         website: e.website,
         ticketUrl: e.ticketUrl,
         verified: true,
+        listingId: e.listingId,
       });
     }
   }
   return out;
 }
 
-function load(): ManualEntry[] {
-  try {
-    return (JSON.parse(fs.readFileSync(FILE, "utf8")).events ?? []) as ManualEntry[];
-  } catch {
-    return [];
-  }
-}
 
 export const manualSource: Source = {
   id: "manual",
   name: "Hand-entered and venue-submitted events",
   kind: "venue-website",
   termsNote: "Entered by us from venue posts/emails, or sent in by the venue.",
-  enabled: () => load().length > 0,
+  // The database may hold nights even when the starter file is empty.
+  enabled: () => loadSeeds().length > 0 || Boolean(process.env.SUPABASE_URL),
   async fetch() {
-    return expandManual(load());
+    const live = await liveListings();
+    return expandManual(live.map((l) => ({ ...l.entry!, listingId: l.id })));
   },
 };

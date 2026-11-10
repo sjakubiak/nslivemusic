@@ -174,3 +174,42 @@ button, input, select { font: inherit; color: inherit; }
   .filter-row select, .filter-row input { width: 100%; min-width: 0; }
   .card { grid-template-columns: 84px minmax(0, 1fr); }
 }
+
+/* Suggest / admin forms */
+.header-nav { margin-left: auto; margin-right: 12px; font-size: 14px; }
+.header-nav a { text-decoration: none; font-weight: 600; }
+.page { max-width: 1100px; margin: 0 auto; padding: 16px 16px 40px; }
+.page.narrow { max-width: 720px; }
+.page h1 { margin: 8px 0 6px; font-size: 24px; }
+.page h2 { font-size: 18px; margin: 24px 0 10px; }
+.card-form { display: grid; gap: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); margin-top: 12px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-grid .span-2 { grid-column: span 2; }
+@media (max-width: 560px) { .form-grid { grid-template-columns: 1fr; } .form-grid .span-2 { grid-column: auto; } }
+.form-grid label, .card-form .block { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+.card-form input:not([type="checkbox"]):not([type="radio"]), .card-form select, .card-form textarea {
+  padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font: inherit; width: 100%;
+}
+.card-form label.check, .card-form .day { display: inline-flex; align-items: center; gap: 6px; color: var(--text); font-size: 14px; }
+.days, .choice { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.days legend { font-size: 13px; color: var(--muted); margin-bottom: 4px; width: 100%; }
+.choice label { display: inline-flex; gap: 6px; align-items: center; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; }
+button.primary, a.primary.button { background: var(--accent); color: var(--accent-text); border: 0; border-radius: 8px; padding: 9px 16px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }
+.actions button:not(.primary) { background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 9px 16px; cursor: pointer; }
+.actions button.danger { color: #b42318; }
+.form-error { background: color-mix(in srgb, #dc2626 12%, var(--surface)); border: 1px solid color-mix(in srgb, #dc2626 40%, var(--border)); padding: 10px 12px; border-radius: 8px; }
+.form-ok { background: color-mix(in srgb, #16a34a 12%, var(--surface)); border: 1px solid color-mix(in srgb, #16a34a 40%, var(--border)); padding: 10px 12px; border-radius: 8px; }
+.hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.admin-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.review { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 14px; }
+.review blockquote { margin: 8px 0; padding: 8px 12px; border-left: 3px solid var(--accent); background: var(--surface-2); border-radius: 0 8px 8px 0; }
+.review .card-form { box-shadow: none; padding: 0; border: 0; }
+.diff { border-collapse: collapse; margin: 6px 0; font-size: 14px; }
+.diff th { text-align: left; padding: 4px 12px 4px 0; color: var(--muted); font-weight: 500; }
+.diff td { padding: 4px 10px; }
+.diff .from { text-decoration: line-through; color: var(--muted); }
+.diff .to { font-weight: 600; }
+.listings { width: 100%; border-collapse: collapse; font-size: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: block; overflow-x: auto; }
+.listings th, .listings td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); }
+.listings th { color: var(--muted); font-weight: 500; }

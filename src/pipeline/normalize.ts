@@ -196,6 +196,7 @@ export function normaliseEvent(raw: RawEvent, now = new Date()): { event: MusicE
       imageUrl: safeUrl(raw.imageUrl),
       sourceUrl: safeUrl(raw.sourceUrl) ?? "",
       verified: raw.verified ?? false,
+      ...(raw.listingId ? { listingId: raw.listingId } : {}),
       lastUpdated: now.toISOString(),
     },
   };

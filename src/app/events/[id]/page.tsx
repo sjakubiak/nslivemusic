@@ -68,6 +68,11 @@ export default async function EventPage({ params }: Props) {
           <MiniMap event={e} />
           <DetailsDirections dest={{ lat: e.latitude, lng: e.longitude }} />
           <p className="muted small">Last updated {new Date(e.lastUpdated).toLocaleDateString("en-CA")}</p>
+          <p className="small">
+            <Link href={e.listingId ? `/suggest?listing=${encodeURIComponent(e.listingId)}&event=${encodeURIComponent(e.id)}` : `/suggest?event=${encodeURIComponent(e.id)}`}>
+              {e.listingId ? "Suggest a change to this night" : "Report a problem with this listing"}
+            </Link>
+          </p>
         </aside>
       </div>
     </main>

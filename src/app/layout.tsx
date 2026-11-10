@@ -21,6 +21,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               NS Live Music <span className="brand-sub">Finder</span>
             </span>
           </Link>
+          <nav className="header-nav">
+            <Link href="/suggest">+ Add an event</Link>
+          </nav>
           {isSampleData() && (
             <span className="sample-badge" title="These events are made-up examples until real event sources are switched on">
               Sample data
