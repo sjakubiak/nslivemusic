@@ -48,6 +48,8 @@ export function sameVenue(a: MusicEvent, b: MusicEvent): boolean {
 }
 
 export function isDuplicate(a: MusicEvent, b: MusicEvent): boolean {
+  // Two different hand-entered nights are distinct on purpose (e.g. two rooms of one hotel).
+  if (a.listingId && b.listingId && a.listingId !== b.listingId) return false;
   if (!sameVenue(a, b)) return false;
   const diffMin = Math.abs(Date.parse(a.startDateTime) - Date.parse(b.startDateTime)) / 60_000;
   if (diffMin > START_WINDOW_MIN) return false;
