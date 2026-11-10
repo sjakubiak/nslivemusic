@@ -49,10 +49,11 @@ export const FEEDS: Feed[] = [
     url: "https://livemusichalifax.ca/events/month/{month}/?ical=1",
     region: "Halifax / Dartmouth",
     defaultCity: "Halifax",
-    permission: "pending",
+    permission: "granted",
     note:
       "WordPress + The Events Calendar; publishes an iCal export. Best single source for HRM " +
-      "(Bearly's, The Local, Lion's Head, Economy Shoe Shop, Music Room…). Ask the curator before enabling.",
+      "(Bearly's, The Local, Lion's Head, Economy Shoe Shop, Music Room…). Switched on 2026-11-10 at " +
+      "Stephen's request for the test site; still email the curator as a courtesy (template in docs/SOURCES.md).",
   },
 ];
 
