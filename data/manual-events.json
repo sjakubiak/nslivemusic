@@ -1,4 +1,514 @@
 {
   "_readme": "Hand-entered events. Add one-off shows with \"date\", or weekly nights with \"weekly\": [\"TU\"]. Record where you confirmed it in \"source\" and when in \"confirmedOn\". Example entry is in docs/SOURCES.md.",
-  "events": []
+  "events": [
+    {
+      "title": "Sunday Night Blues Jam",
+      "venue": "Bearly's House of Blues & Ribs",
+      "address": "1269 Barrington Street",
+      "city": "Halifax",
+      "weekly": [
+        "SU"
+      ],
+      "start": "20:00",
+      "end": "23:00",
+      "genres": [
+        "Blues"
+      ],
+      "description": "Weekly blues jam with the house band fronted by Andrew Gillis and a guest soloist.",
+      "source": "https://www.bearlys.ca/bluesjam",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Acoustic Irish Trad Jam",
+      "venue": "Driftwood Coastal Diner",
+      "address": "2103 Gottingen Street",
+      "city": "Halifax",
+      "weekly": [
+        "TU"
+      ],
+      "start": "19:30",
+      "end": "22:30",
+      "genres": [
+        "Celtic"
+      ],
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Thursday Jam with Dan Baird",
+      "venue": "Monte's Showbar Grill",
+      "address": "245 Waverley Road",
+      "city": "Dartmouth",
+      "weekly": [
+        "TH"
+      ],
+      "start": "20:00",
+      "category": "jam",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Open Mic",
+      "venue": "The Dahlia",
+      "address": "15 Kings Wharf Place",
+      "city": "Dartmouth",
+      "weekly": [
+        "WE"
+      ],
+      "start": "19:00",
+      "end": "22:00",
+      "biweekly": true,
+      "from": "2026-11-11",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Freejam Open Mic",
+      "venue": "Freemans",
+      "city": "Lower Sackville",
+      "weekly": [
+        "TH"
+      ],
+      "start": "20:00",
+      "end": "23:00",
+      "description": "Hosted by Jer Mombo.",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Jam Session",
+      "venue": "Prospect Road Community Centre",
+      "city": "Hatchet Lake",
+      "weekly": [
+        "FR"
+      ],
+      "start": "19:00",
+      "end": "21:00",
+      "category": "jam",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Open Mic with The Hemlocks",
+      "venue": "Paddy's Brewpub & Rosie's Restaurant",
+      "address": "460 Main Street",
+      "city": "Wolfville",
+      "weekly": [
+        "MO"
+      ],
+      "start": "20:45",
+      "cover": "Free",
+      "category": "open mic",
+      "source": "https://valleyevents.ca/115165",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Irish Session",
+      "venue": "Paddy's Brewpub & Rosie's Restaurant",
+      "city": "Kentville",
+      "weekly": [
+        "TU"
+      ],
+      "start": "19:00",
+      "genres": [
+        "Celtic"
+      ],
+      "category": "session",
+      "source": "https://valleyevents.ca/115171",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Wednesday Jam Session",
+      "venue": "Kentville Lions Club",
+      "address": "78 River Street",
+      "city": "Kentville",
+      "weekly": [
+        "WE"
+      ],
+      "start": "18:30",
+      "end": "21:00",
+      "cover": "$2",
+      "description": "Alcohol-free. $2 at the door plus a 50/50 draw; bring a snack to share.",
+      "source": "https://valleyevents.ca/114649",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Saturday Open Mic",
+      "venue": "Royal Canadian Legion (Dr. C.B. Lumsden Branch)",
+      "address": "310 Main Street",
+      "city": "Wolfville",
+      "weekly": [
+        "SA"
+      ],
+      "start": "18:00",
+      "end": "21:45",
+      "cover": "Free",
+      "description": "Hosted by Fabian MacDonald. Lower level sports bar, 19+.",
+      "source": "https://valleyevents.ca/115233",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Open Mic Night",
+      "venue": "The Union Street",
+      "address": "183 Commercial Street",
+      "city": "Berwick",
+      "weekly": [
+        "FR"
+      ],
+      "start": "19:00",
+      "end": "21:00",
+      "cover": "Free",
+      "description": "Show up early to sign up.",
+      "source": "https://valleyevents.ca/112919",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Open Mic with Clay Charles",
+      "venue": "Royal Canadian Legion (Kentville Branch)",
+      "address": "37 River Street",
+      "city": "Kentville",
+      "weekly": [
+        "FR"
+      ],
+      "start": "20:00",
+      "cover": "Free",
+      "biweekly": true,
+      "description": "Every second Friday, downstairs lounge, 19+.",
+      "from": "2026-11-20",
+      "source": "https://valleyevents.ca/113838",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Acoustic Jam",
+      "venue": "Julias Lounge",
+      "address": "165 Willow Street",
+      "city": "Truro",
+      "weekly": [
+        "WE"
+      ],
+      "start": "20:00",
+      "end": "00:00",
+      "category": "jam",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Kitchen Party Jam",
+      "venue": "Hillside Community Hall",
+      "address": "27 Chance Harbour Road",
+      "city": "Trenton",
+      "weekly": [
+        "FR"
+      ],
+      "start": "18:30",
+      "end": "21:00",
+      "cover": "$5",
+      "description": "Audience $5, musicians free.",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Musicians' Jam Corner",
+      "venue": "Cast Away Cafe",
+      "address": "82 Main Street",
+      "city": "Guysborough",
+      "weekly": [
+        "SA"
+      ],
+      "start": "16:00",
+      "end": "18:00",
+      "biweekly": true,
+      "category": "jam",
+      "from": "2026-11-07",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Louisbourg Guitar Circle",
+      "venue": "Louisbourg Firehall",
+      "city": "Louisbourg",
+      "weekly": [
+        "MO"
+      ],
+      "start": "19:00",
+      "end": "21:00",
+      "category": "jam",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Amateur Musical Circle",
+      "venue": "Chéticamp Senior Citizens' Hall",
+      "city": "Chéticamp",
+      "weekly": [
+        "TU"
+      ],
+      "start": "19:00",
+      "end": "21:30",
+      "category": "jam",
+      "description": "Local talent.",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Wednesday Sessions",
+      "venue": "Admiral Lounge & Dining Room",
+      "address": "148 Main Street",
+      "city": "Port Hood",
+      "weekly": [
+        "WE"
+      ],
+      "start": "19:00",
+      "end": "21:00",
+      "genres": [
+        "Celtic"
+      ],
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Wednesday Night Instructors' Ceilidh",
+      "venue": "Gaelic College",
+      "city": "St. Ann's",
+      "weekly": [
+        "WE"
+      ],
+      "start": "19:30",
+      "end": "21:30",
+      "cover": "$15",
+      "genres": [
+        "Celtic"
+      ],
+      "description": "Great Hall of the Clans. In person and online.",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Open Jam",
+      "venue": "Little Narrows Community Centre",
+      "city": "Little Narrows",
+      "weekly": [
+        "WE"
+      ],
+      "start": "19:00",
+      "end": "21:00",
+      "biweekly": true,
+      "category": "jam",
+      "from": "2026-11-11",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "The Northside Session",
+      "venue": "Blue Mist Tavern & Bar",
+      "address": "85 Main Street",
+      "city": "Little Bras d'Or",
+      "weekly": [
+        "TH"
+      ],
+      "start": "19:00",
+      "end": "22:00",
+      "cover": "Free",
+      "genres": [
+        "Celtic"
+      ],
+      "description": "Traditional Cape Breton fiddle.",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Port No Dha Session",
+      "venue": "The Bridge - An Drochaid Museum",
+      "address": "11513 Main Street",
+      "city": "Mabou",
+      "weekly": [
+        "TH"
+      ],
+      "start": "19:00",
+      "end": "21:00",
+      "genres": [
+        "Celtic"
+      ],
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Herman's Jam Night",
+      "venue": "Firemen's Club",
+      "address": "7811 Cabot Trail",
+      "city": "Margaree Forks",
+      "weekly": [
+        "TH"
+      ],
+      "start": "19:00",
+      "end": "21:00",
+      "category": "jam",
+      "description": "19+.",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Weekly Open Mic",
+      "venue": "Bras d'Or Lakes Inn",
+      "address": "10095 Grenville Street",
+      "city": "St. Peter's",
+      "weekly": [
+        "TH"
+      ],
+      "start": "17:30",
+      "category": "open mic",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Open Mic with Tyrone David",
+      "venue": "Groundswell Pub & Inn",
+      "address": "3283 Highway 320",
+      "city": "D'Escousse",
+      "weekly": [
+        "FR"
+      ],
+      "start": "18:00",
+      "end": "20:00",
+      "category": "open mic",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Marion Bridge Guitar Circle",
+      "venue": "Marion Bridge Fire Hall & Recreation Centre",
+      "city": "Marion Bridge",
+      "weekly": [
+        "FR"
+      ],
+      "start": "19:00",
+      "end": "21:00",
+      "category": "jam",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Saturday Fiddle Session",
+      "venue": "Doryman's Tavern",
+      "address": "15528 Cabot Trail",
+      "city": "Chéticamp",
+      "weekly": [
+        "SA"
+      ],
+      "start": "14:00",
+      "end": "18:00",
+      "genres": [
+        "Celtic"
+      ],
+      "category": "session",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Saturday Ceilidh Matinee",
+      "venue": "Frolic'n Folk",
+      "city": "Iona",
+      "weekly": [
+        "SA"
+      ],
+      "start": "17:00",
+      "end": "20:00",
+      "cover": "$5",
+      "genres": [
+        "Celtic"
+      ],
+      "description": "At the Iona Heights Inn.",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Circle Jam",
+      "venue": "Royal Canadian Legion Branch 83",
+      "address": "610 Bras d'Or Florence Road",
+      "city": "Florence",
+      "weekly": [
+        "SA"
+      ],
+      "start": "19:00",
+      "cover": "$2",
+      "category": "jam",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Saturday Jam",
+      "venue": "Little White Church",
+      "city": "Port Hood",
+      "weekly": [
+        "SA"
+      ],
+      "start": "19:00",
+      "end": "21:00",
+      "biweekly": true,
+      "category": "jam",
+      "from": "2026-11-07",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Sunday Trad Session",
+      "venue": "Doryman's Tavern",
+      "address": "15528 Cabot Trail",
+      "city": "Chéticamp",
+      "weekly": [
+        "SU"
+      ],
+      "start": "14:00",
+      "end": "16:00",
+      "genres": [
+        "Celtic"
+      ],
+      "category": "session",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Celtic Fiddle & Piano",
+      "venue": "Whit's Public House at Cabot Links",
+      "city": "Inverness",
+      "weekly": [
+        "SU"
+      ],
+      "start": "11:00",
+      "end": "14:00",
+      "genres": [
+        "Celtic"
+      ],
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Sunday Kitchen Party",
+      "venue": "Red Farm",
+      "address": "1957 Kings Road",
+      "city": "Howie Centre",
+      "weekly": [
+        "SU"
+      ],
+      "start": "12:00",
+      "end": "17:00",
+      "category": "kitchen party",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Music Jam with Tyrone David",
+      "venue": "Louisdale Lions",
+      "address": "347 Highway 320",
+      "city": "Louisdale",
+      "weekly": [
+        "SU"
+      ],
+      "start": "14:00",
+      "end": "16:00",
+      "category": "jam",
+      "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    }
+  ]
 }

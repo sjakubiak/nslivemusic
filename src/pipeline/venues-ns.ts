@@ -8,7 +8,7 @@
  * OpenStreetMap Nominatim and caches the result (see geocode.ts).
  *
  * Addresses come from Tourism Nova Scotia's "8 downtown Halifax pubs with live
- * music" guide and the Live Music Halifax calendar (checked 2026-11-10). Venues
+ * music" guide and the venues' own sites (checked 2026-11-10). Venues
  * listed with only a town were found in Taste of Nova Scotia's "Brews & Bands"
  * guides and Destination Cape Breton's live-music listings; their addresses
  * still need confirming. See docs/SOURCES.md for where each venue posts its
@@ -31,7 +31,7 @@ export const NS_VENUES: RealVenue[] = [
   { name: "Durty Nelly's Irish Pub", aliases: ["Durty Nellys"], address: "1645 Argyle Street", city: "Halifax", website: "https://durtynellys.ca/" },
   { name: "The Loose Cannon Scottish Public House", aliases: ["Loose Cannon"], address: "1566 Argyle Street", city: "Halifax", website: "http://theloosecannon.ca/" },
   { name: "Split Crow Pub", aliases: ["Split Crow"], address: "1855 Granville Street", city: "Halifax", website: "https://www.splitcrow.com/" },
-  { name: "Bearly's House of Blues & Ribs", aliases: ["Bearlys", "Bearly's"], address: "1579 Grafton Street", city: "Halifax", website: "https://www.bearlys.ca/" },
+  { name: "Bearly's House of Blues & Ribs", aliases: ["Bearlys", "Bearly's"], address: "1269 Barrington Street", city: "Halifax", website: "https://www.bearlys.ca/" },
   { name: "The Carleton", address: "1685 Argyle Street", city: "Halifax" },
   { name: "The Lower Deck", aliases: ["Lower Deck Downtown"], address: "1887 Upper Water Street", city: "Halifax" },
   { name: "Stubborn Goat Gastropub", aliases: ["Stubborn Goat"], address: "1580 Argyle Street", city: "Halifax" },
