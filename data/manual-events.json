@@ -2,7 +2,7 @@
   "_readme": "Hand-entered events. Add one-off shows with \"date\", or weekly nights with \"weekly\": [\"TU\"]. Record where you confirmed it in \"source\" and when in \"confirmedOn\". Example entry is in docs/SOURCES.md.",
   "events": [
     {
-      "title": "Sunday Night Blues Jam",
+      "title": "Legendary Sunday Night Blues Jam",
       "venue": "Bearly's House of Blues & Ribs",
       "address": "1269 Barrington Street",
       "city": "Halifax",
@@ -14,8 +14,8 @@
       "genres": [
         "Blues"
       ],
-      "description": "Weekly blues jam with the house band fronted by Andrew Gillis and a guest soloist.",
-      "source": "https://www.bearlys.ca/bluesjam",
+      "description": "With Andrew Gillis and special guests.",
+      "source": "https://www.bearlys.ca/calendar",
       "confirmedOn": "2026-11-10"
     },
     {
@@ -510,6 +510,97 @@
       "end": "16:00",
       "category": "jam",
       "source": "https://www.musiccapebreton.com/daily.html",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Open Song Circle with Noah Tye",
+      "venue": "Bearly's House of Blues & Ribs",
+      "address": "1269 Barrington Street",
+      "city": "Halifax",
+      "weekly": [
+        "MO"
+      ],
+      "start": "20:00",
+      "end": "23:59",
+      "category": "songwriters circle",
+      "source": "https://www.bearlys.ca/calendar",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Garrett Mason's Peace and Love Festival",
+      "venue": "Bearly's House of Blues & Ribs",
+      "address": "1269 Barrington Street",
+      "city": "Halifax",
+      "weekly": [
+        "TU"
+      ],
+      "start": "20:30",
+      "end": "23:30",
+      "genres": [
+        "Blues"
+      ],
+      "source": "https://www.bearlys.ca/calendar",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Morgan Davis Happy Hour",
+      "venue": "Bearly's House of Blues & Ribs",
+      "address": "1269 Barrington Street",
+      "city": "Halifax",
+      "weekly": [
+        "TH"
+      ],
+      "start": "17:00",
+      "end": "19:00",
+      "genres": [
+        "Blues"
+      ],
+      "source": "https://www.bearlys.ca/calendar",
+      "description": "Some weeks feature a substitute act.",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Big Easy Fridays with Mike Cowie & John Alphonse",
+      "venue": "Bearly's House of Blues & Ribs",
+      "address": "1269 Barrington Street",
+      "city": "Halifax",
+      "weekly": [
+        "FR"
+      ],
+      "start": "17:00",
+      "end": "19:30",
+      "source": "https://www.bearlys.ca/calendar",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Band's Night Out",
+      "venue": "Rox Live at the Roxbury",
+      "address": "1743 Grafton Street",
+      "city": "Halifax",
+      "weekly": [
+        "TH"
+      ],
+      "biweekly": true,
+      "from": "2026-04-23",
+      "start": "19:30",
+      "end": "00:00",
+      "category": "jam",
+      "source": "https://downtownhalifax.ca/event/rox-live-presents-bands-night-out-live-crown-royal-stage",
+      "description": "Every second Thursday: a night for musicians to network, jam and take the mic, hosted by Sean. Book a stage spot through Rox Live.",
+      "confirmedOn": "2026-11-10"
+    },
+    {
+      "title": "Rox Live: Live Bands",
+      "venue": "Rox Live at the Roxbury",
+      "address": "1743 Grafton Street",
+      "city": "Halifax",
+      "weekly": [
+        "FR",
+        "SA"
+      ],
+      "start": "22:30",
+      "end": "01:30",
+      "source": "https://www.roxburyhfx.com/rox_live/",
       "confirmedOn": "2026-11-10"
     }
   ]
