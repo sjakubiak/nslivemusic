@@ -1,59 +1,59 @@
 {
-  "updatedAt": "2026-11-10T18:29:13.335Z",
+  "updatedAt": "2026-11-11T17:12:36.076Z",
   "feeds": [
     {
       "key": "https://calendar.google.com/calendar/ical/c_524efec355b321b914df03be204b6da8a7677b16e2d92d7a9761474f46c8f0d6%40group.calendar.google.com/public/basic.ics",
       "foundOn": "http://www.celticmusiccentre.com/events",
       "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
+      "lastSeen": "2026-11-11"
     },
     {
       "key": "https://calendar.google.com/calendar/ical/splitcrow.halifax%40gmail.com/public/basic.ics",
       "foundOn": "https://www.splitcrow.com/live-music-and-events/",
       "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
+      "lastSeen": "2026-11-11"
     },
     {
       "key": "https://durtynellys.ca/events/list/?outlook-ical=1",
       "foundOn": "https://durtynellys.ca/events/",
       "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
+      "lastSeen": "2026-11-11"
     },
     {
       "key": "https://durtynellys.ca/events/month/{month}/?ical=1",
       "foundOn": "https://durtynellys.ca/events/",
       "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
+      "lastSeen": "2026-11-11"
     },
     {
       "key": "https://oldtriangle.com/events/?ical=1",
       "foundOn": "https://www.oldtriangle.com/events/",
       "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
+      "lastSeen": "2026-11-11"
     },
     {
       "key": "https://oldtriangle.com/events/month/?ical=1",
       "foundOn": "https://www.oldtriangle.com/events/",
       "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
+      "lastSeen": "2026-11-11"
     },
     {
       "key": "https://oldtriangle.com/events/month/?outlook-ical=1",
       "foundOn": "https://www.oldtriangle.com/events/",
       "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
+      "lastSeen": "2026-11-11"
     },
     {
       "key": "https://oldtriangle.com/events/month/{month}/?ical=1",
-      "foundOn": "https://oldtriangle.com/event/the-plugs-8/",
+      "foundOn": "https://oldtriangle.com/event/dave-bradshaw-5/",
       "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
+      "lastSeen": "2026-11-11"
     },
     {
       "key": "https://www.oldtriangle.com/events/month/{month}/?ical=1",
       "foundOn": "https://www.oldtriangle.com/",
       "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
+      "lastSeen": "2026-11-11"
     }
   ],
   "jsonLdPages": [
@@ -61,25 +61,31 @@
       "key": "https://durtynellys.ca/events",
       "foundOn": "https://durtynellys.ca/",
       "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
+      "lastSeen": "2026-11-11"
     },
     {
       "key": "https://durtynellys.ca/events/",
       "foundOn": "https://durtynellys.ca/",
       "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
+      "lastSeen": "2026-11-11"
+    },
+    {
+      "key": "https://oldtriangle.com/event/dave-bradshaw-5/",
+      "foundOn": "https://oldtriangle.com/",
+      "firstSeen": "2026-11-11",
+      "lastSeen": "2026-11-11"
     },
     {
       "key": "https://oldtriangle.com/event/glen-gordon-2/",
       "foundOn": "https://oldtriangle.com/",
       "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
+      "lastSeen": "2026-11-11"
     },
     {
       "key": "https://oldtriangle.com/event/jackson-weldon-4/",
       "foundOn": "https://oldtriangle.com/",
       "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
+      "lastSeen": "2026-11-11"
     },
     {
       "key": "https://oldtriangle.com/event/kyle-2/",
@@ -91,19 +97,19 @@
       "key": "https://oldtriangle.com/event/the-plugs-8/",
       "foundOn": "https://oldtriangle.com/",
       "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
+      "lastSeen": "2026-11-11"
     },
     {
       "key": "https://oldtriangle.com/event/travis-hatcher-9/",
       "foundOn": "https://oldtriangle.com/",
       "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
+      "lastSeen": "2026-11-11"
     },
     {
       "key": "https://www.oldtriangle.com/events/",
       "foundOn": "https://www.oldtriangle.com/",
       "firstSeen": "2026-11-10",
-      "lastSeen": "2026-11-10"
+      "lastSeen": "2026-11-11"
     }
   ],
   "eventbriteOrganizers": []
