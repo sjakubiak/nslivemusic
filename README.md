@@ -15,6 +15,10 @@ npm test           # unit tests: normalisation, dedup, filters, directions
 npm run build && npm start
 ```
 
+## Hosting
+
+Runs on Cloudflare Workers, rebuilt every 6 hours by GitHub Actions. Setup steps: [docs/CLOUDFLARE.md](docs/CLOUDFLARE.md).
+
 ## Features
 
 | Spec item | Where |

@@ -15,6 +15,8 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import type { ManualEntry } from "../pipeline/sources/manual";
+// Bundled rather than read from disk, so it also works on Cloudflare Workers.
+import seedFile from "../../data/manual-events.json";
 
 export type SuggestionKind = "new" | "edit" | "remove" | "report";
 export type ListingStatus = "live" | "pending" | "rejected" | "applied" | "removed" | "done";
@@ -36,7 +38,6 @@ export interface Listing {
   reviewedAt?: string | null;
 }
 
-const SEED_FILE = () => path.join(process.cwd(), "data", "manual-events.json");
 const LOCAL_FILE = () => process.env.LISTINGS_FILE ?? path.join(process.cwd(), "data", "listings.json");
 
 export function seedId(e: Pick<ManualEntry, "title" | "venue" | "city">): string {
@@ -45,7 +46,7 @@ export function seedId(e: Pick<ManualEntry, "title" | "venue" | "city">): string
 
 export function loadSeeds(): Listing[] {
   try {
-    const events = (JSON.parse(fs.readFileSync(SEED_FILE(), "utf8")).events ?? []) as ManualEntry[];
+    const events = ((seedFile as { events?: unknown[] }).events ?? []) as ManualEntry[];
     return events.map((entry) => ({ id: seedId(entry), kind: "new", status: "live", entry, createdAt: entry.confirmedOn }));
   } catch {
     return [];

@@ -5,3 +5,8 @@ next-env.d.ts
 data/events.json
 data/geocode-cache.json
 data/listings.json
+
+# Cloudflare build output
+.open-next
+.wrangler
+.dev.vars

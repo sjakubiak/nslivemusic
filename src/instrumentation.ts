@@ -8,7 +8,8 @@ export async function register() {
   if (process.env.NEXT_RUNTIME !== "nodejs" || process.env.NODE_ENV !== "production") return;
   const hours = Number(process.env.INGEST_INTERVAL_HOURS ?? 6);
   if (!hours) return;
-  const { runIngest } = await import("./lib/refresh");
+  const { runIngest, onCloudflare } = await import("./lib/refresh");
+  if (onCloudflare()) return; // rebuilt every 6h by GitHub Actions instead
   setInterval(() => void runIngest(), hours * 3600_000).unref();
   console.log(`[refresh] re-ingesting every ${hours}h`);
 }

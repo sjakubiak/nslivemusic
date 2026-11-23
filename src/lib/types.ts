@@ -13,11 +13,11 @@ export const EVENT_TYPE_LABEL: Record<EventType, string> = {
 
 /** Marker / badge colours from the spec. */
 export const EVENT_TYPE_COLOR: Record<EventType, string> = {
-  LIVE_MUSIC: "#2563eb", // blue
-  OPEN_MIC: "#16a34a", // green
-  JAM_SESSION: "#9333ea", // purple
-  KARAOKE: "#ea580c", // orange
-  OTHER: "#64748b", // slate
+  LIVE_MUSIC: "#b3402a", // brick red
+  OPEN_MIC: "#2f6f5e", // sea green
+  JAM_SESSION: "#6d4a86", // heather
+  KARAOKE: "#b07a12", // mustard
+  OTHER: "#6b6359", // driftwood grey
 };
 
 export const GENRES = ["Rock", "Country", "Folk", "Celtic", "Blues", "Jazz", "Pop"] as const;

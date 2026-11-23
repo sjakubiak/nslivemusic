@@ -37,7 +37,7 @@ function popupHtml(e: EventWithDistance, origin?: LatLng) {
     ${e.genre?.length ? `<div class="popup-genre">${esc(e.genre.join(" · "))}</div>` : ""}
     <div class="popup-actions">
       <a class="btn btn-primary" target="_blank" rel="noopener noreferrer" href="${googleDirectionsUrl({ lat: e.latitude, lng: e.longitude }, origin)}">Directions</a>
-      <a class="btn" href="/events/${e.id}">Event details</a>
+      <a class="btn" href="/events/${e.id}">Details</a>
     </div>
   </div>`;
 }

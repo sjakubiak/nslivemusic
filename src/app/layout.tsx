@@ -13,16 +13,18 @@ export const viewport: Viewport = { width: "device-width", initialScale: 1 };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-CA">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;700;800&display=swap" rel="stylesheet" />
+      </head>
       <body>
         <header className="site-header">
           <Link href="/" className="brand">
-            <span className="brand-mark" aria-hidden>♪</span>
-            <span>
-              NS Live Music <span className="brand-sub">Finder</span>
-            </span>
+            NS Live Music <span className="brand-sub">Finder</span>
           </Link>
           <nav className="header-nav">
-            <Link href="/suggest">+ Add an event</Link>
+            <Link href="/suggest">Add a night</Link>
           </nav>
           {isSampleData() && (
             <span className="sample-badge" title="These events are made-up examples until real event sources are switched on">
@@ -31,6 +33,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           )}
         </header>
         {children}
+        <footer className="site-footer">
+          <p>
+            Gigs, open mics, jams and kitchen parties around Nova Scotia, gathered from venue calendars, Eventbrite and
+            people who send them in. Always check with the venue before you head out.
+          </p>
+          <p>
+            <Link href="/suggest">Add a regular night</Link>
+          </p>
+        </footer>
       </body>
     </html>
   );
