@@ -72,6 +72,15 @@ Two events are duplicates when **all** of these hold:
 
 On merge, the verified/more complete record wins, missing fields are filled from the other, genres are unioned and `verified` is kept if either source was verified.
 
+## Search engines
+
+- Every page has its own title, description, canonical link and social preview image.
+- `/sitemap.xml` lists the home page plus every town (`/live-music/halifax`), venue (`/venues/...`) and event with something coming up. `/robots.txt` points to it and keeps `/admin` and `/api` out.
+- Event, town and venue pages include schema.org `MusicEvent` / `Event` data so Google can show them in its event listings.
+- Past events and empty town/venue pages stay reachable but are marked `noindex`. While the site is showing made-up sample data, the whole site is `noindex`.
+- The site address defaults to the workers.dev URL. If a custom domain is added, set `SITE_URL` (e.g. `https://example.ca`) in the build environment.
+- To get listed faster, add the site in [Google Search Console](https://search.google.com/search-console) and submit the sitemap.
+
 ## Future work
 
 - In-app route preview (OSRM or Mapbox Directions) with travel time and distance

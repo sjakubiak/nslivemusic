@@ -238,3 +238,16 @@ button.primary, a.primary.button { background: var(--accent); color: var(--accen
 .listings { width: 100%; border-collapse: collapse; font-size: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: block; overflow-x: auto; }
 .listings th, .listings td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); }
 .listings th { color: var(--muted); font-weight: 500; }
+
+/* Headline on the home page, town and venue pages */
+.intro { margin: 2px 0 12px; }
+.intro h1 { margin: 0 0 2px; font-size: 24px; line-height: 1.2; font-weight: 800; }
+.intro p { margin: 0; color: var(--muted); max-width: 720px; }
+.town-links { max-width: 1400px; width: 100%; margin: 8px auto 0; padding: 0 16px; }
+.town-links h2 { font-size: 16px; margin: 0 0 6px; }
+.town-links ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 14px; }
+.crumbs { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+.crumbs a { color: var(--muted); }
+.page .lede { color: var(--muted); margin: 0 0 12px; max-width: 720px; }
+.page .cards { border-top: 2px solid var(--text); }
+@media (max-width: 520px) { .intro h1 { font-size: 20px; } }

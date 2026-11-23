@@ -23,7 +23,7 @@ const DEFAULT_RADIUS = 25;
 
 type LocationMode = { kind: "none" } | { kind: "device"; loc: LatLng } | { kind: "place"; name: string; loc: LatLng };
 
-export default function Finder({ events }: { events: MusicEvent[] }) {
+export default function Finder({ events, intro }: { events: MusicEvent[]; intro?: React.ReactNode }) {
   const [search, setSearch] = useState("");
   const [types, setTypes] = useState<EventType[]>([]);
   const [date, setDate] = useState<DateFilter>("NEXT_7");
@@ -81,6 +81,7 @@ export default function Finder({ events }: { events: MusicEvent[] }) {
 
   return (
     <main className="finder">
+      {intro}
       <section className="controls" aria-label="Search and filters">
         <div className="search-row">
           <input
