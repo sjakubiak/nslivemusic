@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       const s = await getListing(id);
       const withDetails = s && s.kind !== "remove" && s.kind !== "report";
       await approve(id, withDetails ? entryFromForm(f, s!.entry?.source ?? "Suggested on the site", today) : undefined);
-      to.searchParams.set("ok", "Approved. The site updates in about a minute.");
+      to.searchParams.set("ok", "Approved. The site updates in a few minutes.");
     } else if (action === "reject") {
       await reject(id);
       to.searchParams.set("ok", "Suggestion declined.");
@@ -27,11 +27,11 @@ export async function POST(req: NextRequest) {
       const existing = id ? await getListing(id) : undefined;
       await saveListing(existing?.id, entryFromForm(f, existing?.entry?.source ?? "Added by the site admin", today));
       to.pathname = "/admin";
-      to.searchParams.set("ok", "Saved. The site updates in about a minute.");
+      to.searchParams.set("ok", "Saved. The site updates in a few minutes.");
     } else if (action === "remove") {
       await removeListing(id);
       to.pathname = "/admin";
-      to.searchParams.set("ok", "Removed. The site updates in about a minute.");
+      to.searchParams.set("ok", "Removed. The site updates in a few minutes.");
     } else {
       throw new FormError("Unknown action.");
     }
@@ -39,6 +39,6 @@ export async function POST(req: NextRequest) {
     to.searchParams.set("error", err instanceof FormError || err instanceof Error ? err.message : "Something went wrong.");
     return NextResponse.redirect(to, 303);
   }
-  if (action !== "reject") void runIngest();
+  if (action !== "reject") await runIngest();
   return NextResponse.redirect(to, 303);
 }
