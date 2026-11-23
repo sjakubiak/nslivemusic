@@ -6,7 +6,10 @@
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
     "directory": ".open-next/assets",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
+    // Serve files like /google977941eafd54a7f0.html as-is, without redirecting
+    // to the address with ".html" removed (Google's site check needs the exact URL).
+    "html_handling": "none"
   },
   "observability": { "enabled": true },
   // Regular nights and suggestions (/suggest, /admin). Free, no pausing.
