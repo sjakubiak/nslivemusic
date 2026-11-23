@@ -31,7 +31,7 @@ jobs:
         env:
           # Optional: lets the finder turn Eventbrite event links into organizers.
           EVENTBRITE_TOKEN: ${{ secrets.EVENTBRITE_TOKEN }}
-          SCRAPER_USER_AGENT: "NSLiveMusicFinderBot/1.0 (+https://nslivemusic.onrender.com)"
+          SCRAPER_USER_AGENT: "NSLiveMusicFinderBot/1.0 (+https://nslivemusic.novascotia.workers.dev)"
       - name: Commit new sources
         run: |
           if git diff --quiet -- data/discovered.json; then

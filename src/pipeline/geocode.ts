@@ -13,7 +13,7 @@ import { findVenue } from "./venues";
  */
 const cachePath = () => process.env.GEOCODE_CACHE ?? path.join(process.cwd(), "data", "geocode-cache.json");
 const MAX_LOOKUPS_PER_RUN = 60;
-const USER_AGENT = process.env.SCRAPER_USER_AGENT ?? "NSLiveMusicFinderBot/1.0 (+https://nslivemusic.onrender.com)";
+const USER_AGENT = process.env.SCRAPER_USER_AGENT ?? "NSLiveMusicFinderBot/1.0 (+https://nslivemusic.novascotia.workers.dev)";
 
 type Cache = Record<string, { lat: number; lng: number } | null>;
 
