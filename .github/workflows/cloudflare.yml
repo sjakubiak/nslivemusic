@@ -58,5 +58,5 @@ jobs:
           # Read by the ingest step at build time.
           EVENTBRITE_TOKEN: ${{ secrets.EVENTBRITE_TOKEN }}
           # Approved regular nights, read from the live site (stored in Cloudflare D1).
-          LISTINGS_URL: https://nslivemusic.sjakubiak.workers.dev/api/listings
-          SCRAPER_USER_AGENT: "NSLiveMusicFinderBot/1.0 (+https://nslivemusic.onrender.com)"
+          LISTINGS_URL: https://nslivemusic.novascotia.workers.dev/api/listings
+          SCRAPER_USER_AGENT: "NSLiveMusicFinderBot/1.0 (+https://nslivemusic.novascotia.workers.dev)"

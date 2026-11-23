@@ -116,4 +116,4 @@ A lot of NS pubs only post gigs on Facebook, so this is the hard one.
 
 > Subject: Listing your shows on NS Live Music Finder
 >
-> Hi, I'm building a free map of live music, open mics and sessions across Nova Scotia (nslivemusic.onrender.com). I'd love to include your listings by reading your calendar's iCal export a few times a day, with each event linking back to your page. Would that be OK? If you'd prefer, you can also send us your schedule, or tell us any events you'd rather we leave out.
+> Hi, I'm building a free map of live music, open mics and sessions across Nova Scotia (nslivemusic.novascotia.workers.dev). I'd love to include your listings by reading your calendar's iCal export a few times a day, with each event linking back to your page. Would that be OK? If you'd prefer, you can also send us your schedule, or tell us any events you'd rather we leave out.

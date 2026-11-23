@@ -5,7 +5,7 @@ import type { MusicEvent } from "./types";
  * The public address of the site, used for canonical links, the sitemap and
  * social previews. Set SITE_URL (e.g. when a custom domain is added) to change it.
  */
-export const SITE_URL = (process.env.SITE_URL || "https://nslivemusic.sjakubiak.workers.dev").replace(/\/+$/, "");
+export const SITE_URL = (process.env.SITE_URL || "https://nslivemusic.novascotia.workers.dev").replace(/\/+$/, "");
 export const SITE_NAME = "NS Live Music Finder";
 export const SITE_DESCRIPTION =
   "Find live music, open mics, jam sessions and kitchen parties tonight and this week in Halifax, Dartmouth and towns across Nova Scotia.";
