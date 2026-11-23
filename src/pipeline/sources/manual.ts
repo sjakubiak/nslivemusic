@@ -102,7 +102,7 @@ export const manualSource: Source = {
   kind: "venue-website",
   termsNote: "Entered by us from venue posts/emails, or sent in by the venue.",
   // The database may hold nights even when the starter file is empty.
-  enabled: () => loadSeeds().length > 0 || Boolean(process.env.SUPABASE_URL),
+  enabled: () => loadSeeds().length > 0 || Boolean(process.env.LISTINGS_URL),
   async fetch() {
     const live = await liveListings();
     return expandManual(live.map((l) => ({ ...l.entry!, listingId: l.id })));
