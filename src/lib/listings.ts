@@ -4,12 +4,11 @@
  * approves it on /admin.
  *
  * The starting list is data/manual-events.json ("seed" entries). Edits and
- * new nights are stored as rows: in Supabase when SUPABASE_URL and
- * SUPABASE_SERVICE_ROLE_KEY are set (Render's disk is wiped on every deploy),
+ * new nights are stored as rows: in Cloudflare D1 when running on Cloudflare,
  * otherwise in data/listings.json for local development.
  *
  * No "server-only" import: the ingest pipeline (plain Node) reads this too.
- * Only server code may import it, because it uses the service key.
+ * Only server code may import it.
  */
 import crypto from "node:crypto";
 import fs from "node:fs";
@@ -76,52 +75,96 @@ const fileBackend: Backend = {
   },
 };
 
-/** Supabase over its REST API: table `listings` (see docs/supabase-listings.sql). */
-function supabaseBackend(url: string, key: string): Backend {
-  const headers: Record<string, string> = { apikey: key, "Content-Type": "application/json" };
-  if (key.split(".").length === 3) headers.Authorization = `Bearer ${key}`; // legacy JWT service_role key
-  const toRow = (l: Listing) => ({
-    id: l.id, kind: l.kind, status: l.status, target_id: l.targetId ?? null, event_id: l.eventId ?? null,
-    entry: l.entry ?? null, note: l.note ?? null, contact: l.contact ?? null, created_at: l.createdAt, reviewed_at: l.reviewedAt ?? null,
-  });
-  type Row = ReturnType<typeof toRow>;
-  const fromRow = (r: Row): Listing => ({
-    id: r.id, kind: r.kind, status: r.status, targetId: r.target_id, eventId: r.event_id,
-    entry: r.entry, note: r.note, contact: r.contact, createdAt: r.created_at, reviewedAt: r.reviewed_at,
-  });
-  const base = `${url.replace(/\/$/, "")}/rest/v1/listings`;
+/** Minimal shape of a Cloudflare D1 binding (only what we use). */
+interface D1Like {
+  prepare(sql: string): { bind(...v: unknown[]): { run(): Promise<unknown>; all<T>(): Promise<{ results: T[] }> }; all<T>(): Promise<{ results: T[] }>; run(): Promise<unknown> };
+  batch(stmts: unknown[]): Promise<unknown>;
+}
+
+const CREATE_SQL = `CREATE TABLE IF NOT EXISTS listings (
+  id TEXT PRIMARY KEY, kind TEXT NOT NULL, status TEXT NOT NULL, target_id TEXT, event_id TEXT,
+  entry TEXT, note TEXT, contact TEXT, created_at TEXT NOT NULL, reviewed_at TEXT)`;
+
+/** Cloudflare D1 (free SQLite database bound to the Worker as `DB`). The table is created on first use. */
+export function d1Backend(db: D1Like): Backend {
+  let ready: Promise<unknown> | undefined;
+  const init = () => (ready ??= db.prepare(CREATE_SQL).run());
+  type Row = { id: string; kind: SuggestionKind; status: ListingStatus; target_id: string | null; event_id: string | null; entry: string | null; note: string | null; contact: string | null; created_at: string; reviewed_at: string | null };
   return {
     async all() {
-      const res = await fetch(`${base}?select=*&order=created_at.desc`, { headers, cache: "no-store" });
-      if (!res.ok) throw new Error(`listings read failed: ${res.status} ${await res.text()}`);
-      return ((await res.json()) as Row[]).map(fromRow);
+      await init();
+      const { results } = await db.prepare("SELECT * FROM listings ORDER BY created_at DESC").all<Row>();
+      return results.map((r) => ({
+        id: r.id, kind: r.kind, status: r.status, targetId: r.target_id, eventId: r.event_id,
+        entry: r.entry ? (JSON.parse(r.entry) as ManualEntry) : null, note: r.note, contact: r.contact,
+        createdAt: r.created_at, reviewedAt: r.reviewed_at,
+      }));
     },
     async upsert(rows) {
-      const res = await fetch(base, {
-        method: "POST",
-        headers: { ...headers, Prefer: "resolution=merge-duplicates,return=minimal" },
-        body: JSON.stringify(rows.map(toRow)),
-      });
-      if (!res.ok) throw new Error(`listings write failed: ${res.status} ${await res.text()}`);
+      await init();
+      const sql = `INSERT INTO listings (id, kind, status, target_id, event_id, entry, note, contact, created_at, reviewed_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(id) DO UPDATE SET kind=excluded.kind, status=excluded.status, target_id=excluded.target_id,
+        event_id=excluded.event_id, entry=excluded.entry, note=excluded.note, contact=excluded.contact,
+        created_at=excluded.created_at, reviewed_at=excluded.reviewed_at`;
+      await db.batch(rows.map((l) => db.prepare(sql).bind(
+        l.id, l.kind, l.status, l.targetId ?? null, l.eventId ?? null, l.entry ? JSON.stringify(l.entry) : null,
+        l.note ?? null, l.contact ?? null, l.createdAt, l.reviewedAt ?? null,
+      )));
     },
   };
 }
 
-function backend(): Backend {
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  return url && key ? supabaseBackend(url, key) : fileBackend;
+/** The Worker's D1 binding, when running on Cloudflare. Undefined in plain Node (local dev, tests, ingest). */
+async function d1(): Promise<D1Like | undefined> {
+  if (!(typeof navigator !== "undefined" && navigator.userAgent === "Cloudflare-Workers")) return undefined;
+  try {
+    const { getCloudflareContext } = await import("@opennextjs/cloudflare");
+    return (getCloudflareContext().env as { DB?: D1Like }).DB;
+  } catch {
+    return undefined;
+  }
+}
+
+/**
+ * Ingest runs in GitHub Actions, away from the database. It reads the live
+ * nights from the site itself (LISTINGS_URL, a public list of approved nights only).
+ */
+function remoteBackend(url: string): Backend {
+  return {
+    async all() {
+      try {
+        const res = await fetch(url, { headers: { Accept: "application/json" } });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return ((await res.json()) as { listings: Listing[] }).listings;
+      } catch (err) {
+        // First deploy, or the site is down: fall back to the starter list.
+        console.warn(`[listings] couldn't read ${url}: ${(err as Error).message}; using the starter list only`);
+        return [];
+      }
+    },
+    async upsert() {
+      throw new Error("read-only");
+    },
+  };
+}
+
+async function backend(): Promise<Backend> {
+  const db = await d1();
+  if (db) return d1Backend(db);
+  if (process.env.LISTINGS_URL) return remoteBackend(process.env.LISTINGS_URL);
+  return fileBackend;
 }
 
 export function storageIsPermanent(): boolean {
-  return Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+  return typeof navigator !== "undefined" && navigator.userAgent === "Cloudflare-Workers";
 }
 
 // ---------------------------------------------------------------- queries
 
 /** Seeds overlaid with stored rows (a stored row with a seed's id replaces it). */
 export async function allListings(): Promise<Listing[]> {
-  const stored = await backend().all();
+  const stored = await (await backend()).all();
   const ids = new Set(stored.map((r) => r.id));
   return [...loadSeeds().filter((s) => !ids.has(s.id)), ...stored];
 }
@@ -142,7 +185,7 @@ export async function pendingSuggestions(): Promise<Listing[]> {
 
 export async function submitSuggestion(s: Pick<Listing, "kind" | "targetId" | "eventId" | "entry" | "note" | "contact">, now = new Date()): Promise<Listing> {
   const row: Listing = { ...s, id: `sug-${crypto.randomUUID()}`, status: "pending", createdAt: now.toISOString() };
-  await backend().upsert([row]);
+  await (await backend()).upsert([row]);
   return row;
 }
 
@@ -154,11 +197,11 @@ export async function approve(id: string, edited?: ManualEntry, now = new Date()
   const entry = edited ?? s.entry ?? undefined;
   if (s.kind === "new") {
     if (!entry) throw new Error("This suggestion has no event details.");
-    await backend().upsert([{ ...s, entry, status: "live", reviewedAt }]);
+    await (await backend()).upsert([{ ...s, entry, status: "live", reviewedAt }]);
     return;
   }
   if (s.kind === "report") {
-    await backend().upsert([{ ...s, status: "done", reviewedAt }]);
+    await (await backend()).upsert([{ ...s, status: "done", reviewedAt }]);
     return;
   }
   const target = s.targetId ? await getListing(s.targetId) : undefined;
@@ -167,13 +210,13 @@ export async function approve(id: string, edited?: ManualEntry, now = new Date()
     s.kind === "remove"
       ? { ...target, status: "removed", reviewedAt }
       : { ...target, entry: { ...entry!, confirmedOn: nsToday(now) }, status: "live", reviewedAt };
-  await backend().upsert([updated, { ...s, entry, status: "applied", reviewedAt }]);
+  await (await backend()).upsert([updated, { ...s, entry, status: "applied", reviewedAt }]);
 }
 
 export async function reject(id: string, now = new Date()): Promise<void> {
   const s = await getListing(id);
   if (!s || s.status !== "pending") throw new Error("That suggestion isn't waiting for review any more.");
-  await backend().upsert([{ ...s, status: "rejected", reviewedAt: now.toISOString() }]);
+  await (await backend()).upsert([{ ...s, status: "rejected", reviewedAt: now.toISOString() }]);
 }
 
 /** Admin's own direct changes (no suggestion step). */
@@ -182,14 +225,14 @@ export async function saveListing(id: string | undefined, entry: ManualEntry, no
   const row: Listing = existing
     ? { ...existing, entry, status: "live", reviewedAt: now.toISOString() }
     : { id: `lst-${crypto.randomUUID()}`, kind: "new", status: "live", entry, createdAt: now.toISOString(), reviewedAt: now.toISOString() };
-  await backend().upsert([row]);
+  await (await backend()).upsert([row]);
   return row.id;
 }
 
 export async function removeListing(id: string, now = new Date()): Promise<void> {
   const existing = await getListing(id);
   if (!existing) throw new Error("Not found.");
-  await backend().upsert([{ ...existing, status: "removed", reviewedAt: now.toISOString() }]);
+  await (await backend()).upsert([{ ...existing, status: "removed", reviewedAt: now.toISOString() }]);
 }
 
 function nsToday(now: Date): string {

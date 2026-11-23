@@ -22,10 +22,10 @@ Not planned: AI reading of venue pages (decided 2026-11-10). Web search for new 
 
 ## Suggestions and the admin page
 
-Anyone can add a regular night at `/suggest` (the "+ Add an event" link in the header). They can also suggest a change, or say a night has stopped, from any hand-entered event's page. Events from calendar feeds and Eventbrite get a "Report a problem" link instead. Nothing goes live until it's approved at `/admin`, where the admin also edits, adds and removes nights directly. An approved change triggers a fresh ingest, so the site updates within about a minute.
+Anyone can add a regular night at `/suggest` (the "+ Add an event" link in the header). They can also suggest a change, or say a night has stopped, from any hand-entered event's page. Events from calendar feeds and Eventbrite get a "Report a problem" link instead. Nothing goes live until it's approved at `/admin`, where the admin also edits, adds and removes nights directly. An approved change triggers a rebuild (GitHub Actions), so the site updates within a few minutes.
 
-- **Storage:** the Supabase project "nslivemusic", table `listings` (`docs/supabase-listings.sql`, RLS on with no public access). `data/manual-events.json` is the starting list. A stored row with the same id replaces a starting entry. Without the Supabase settings, the app falls back to `data/listings.json`, which is fine locally but is wiped on every Render deploy.
-- **Render env vars:** `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (the project's secret key), and `ADMIN_PASSWORD`.
+- **Storage:** Cloudflare D1 database "nslivemusic" (bound to the Worker as `DB`), table `listings`, created automatically on first use. `data/manual-events.json` is the starting list. A stored row with the same id replaces a starting entry. Outside Cloudflare (local dev), rows go to `data/listings.json`. The 6-hourly rebuild reads approved nights from the site's `/api/listings` (approved nights only, no notes or contact details). Moved off Supabase on 2026-11-23 because the free project kept pausing; it held no rows.
+- **Cloudflare secret:** `ADMIN_PASSWORD`.
 - **Spam protection:** same-origin form posts only, a hidden honeypot field, 8 suggestions per hour per IP, 10 login attempts per 15 minutes, length limits, and links restricted to http(s) and checked against the blocklist.
 
 ## How to switch a source on
@@ -36,7 +36,7 @@ Anyone can add a regular night at `/suggest` (the "+ Add an event" link in the h
 | iCal feeds (Google Calendar, WordPress "?ical=1", Squarespace…) | `sources/ical.ts`, list in `feeds.ts` | The site owner's OK, then set `permission: "granted"` |
 | WordPress The Events Calendar API | `sources/wp-tribe.ts`, list in `feeds.ts` | Same, and the site's robots.txt must allow `/wp-json` |
 | Venue pages with schema.org JSON-LD | `sources/jsonld-venue.ts` (`VENUE_PAGES`) | Terms checked, robots.txt allows it |
-| Eventbrite | `sources/eventbrite.ts` | `EVENTBRITE_TOKEN` + `EVENTBRITE_ORGANIZER_IDS` env vars on Render |
+| Eventbrite | `sources/eventbrite.ts` | `EVENTBRITE_TOKEN` GitHub secret (+ `EVENTBRITE_ORGANIZER_IDS`) |
 | Facebook venue Pages | `sources/facebook-pages.ts` | A Meta app with App Review, plus each venue granting a Page token |
 
 To test a pending feed without marking it granted: `ENABLE_FEEDS=<feed id> npm run ingest`.

@@ -22,14 +22,13 @@ Cloudflare has no disk, so events are gathered at build time:
    *Secrets and variables* > *Actions* > *New repository secret*. Add:
    - `CLOUDFLARE_API_TOKEN` (step 2)
    - `CLOUDFLARE_ACCOUNT_ID` (step 3)
-   - `EVENTBRITE_TOKEN` (same value as on Render)
-   - `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` (same values as on Render)
+   - `EVENTBRITE_TOKEN`
 5. **First deploy.** GitHub repo > *Actions* > *Deploy to Cloudflare* > *Run workflow*.
    When it's green, the site is at `https://nslivemusic.<your-subdomain>.workers.dev`
    (shown in Cloudflare under *Workers & Pages* > *nslivemusic*).
 6. **Site secrets** (used while the site runs). Cloudflare > *Workers & Pages* >
    *nslivemusic* > *Settings* > *Variables and Secrets* > *Add*, type **Secret**:
-   - `ADMIN_PASSWORD`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (same as Render)
+   - `ADMIN_PASSWORD` (whatever you want to log in to /admin with)
    - `GITHUB_DEPLOY_TOKEN`: so approvals show up within minutes. On GitHub:
      *Settings* (your account) > *Developer settings* > *Personal access tokens* >
      *Fine-grained tokens* > *Generate new token*; repository access: only
@@ -37,6 +36,10 @@ Cloudflare has no disk, so events are gathered at build time:
      changes appear at the next 6-hourly rebuild.
 7. **Optional: your own domain.** *Workers & Pages* > *nslivemusic* > *Settings* >
    *Domains & Routes* > *Add* > *Custom domain*.
+
+Suggestions and regular nights are stored in the free Cloudflare D1 database
+`nslivemusic` (see `wrangler.jsonc`). Nothing to set up: the table is created on
+first use. You can browse it under *Storage & databases* > *D1*.
 
 Once the Cloudflare site looks right, the Render service can be deleted.
 

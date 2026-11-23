@@ -9,7 +9,7 @@ const base = { title: "Open Mic", venue: "Test Pub", city: "Halifax", weekly: ["
 
 beforeEach(() => {
   process.env.LISTINGS_FILE = path.join(os.tmpdir(), `listings-${Date.now()}-${Math.random()}.json`);
-  delete process.env.SUPABASE_URL;
+  delete process.env.LISTINGS_URL;
 });
 
 describe("suggestion form", () => {

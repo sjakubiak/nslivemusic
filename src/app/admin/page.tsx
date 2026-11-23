@@ -71,7 +71,7 @@ export default async function AdminPage({ searchParams }: Props) {
         </form>
       </div>
       {!storageIsPermanent() && (
-        <p className="form-error">The database isn't connected (SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY), so changes here will be lost on the next deploy.</p>
+        <p className="form-error">This copy of the site isn't running on Cloudflare, so changes here are saved to a local file only (fine for testing).</p>
       )}
       {loadError && <p className="form-error">Couldn't load listings: {loadError}</p>}
       {p.ok && <p className="form-ok" role="status">{p.ok}</p>}

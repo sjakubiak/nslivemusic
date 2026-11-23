@@ -8,5 +8,9 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
-  "observability": { "enabled": true }
+  "observability": { "enabled": true },
+  // Regular nights and suggestions (/suggest, /admin). Free, no pausing.
+  "d1_databases": [
+    { "binding": "DB", "database_name": "nslivemusic", "database_id": "c7308b27-45db-42b5-b3a3-c88a0bf7b3dd" }
+  ]
 }
