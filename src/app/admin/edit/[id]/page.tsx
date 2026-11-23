@@ -6,7 +6,7 @@ import { isAdmin } from "@/lib/admin-auth";
 import { getListing } from "@/lib/listings";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Edit night | NS Live Music Finder", robots: { index: false } };
+export const metadata: Metadata = { title: "Edit night", robots: { index: false } };
 
 type Props = { params: Promise<{ id: string }>; searchParams: Promise<Record<string, string | undefined>> };
 

@@ -8,7 +8,7 @@ import { DAYS } from "@/lib/listing-form";
 import type { ManualEntry } from "@/pipeline/sources/manual";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Admin | NS Live Music Finder", robots: { index: false } };
+export const metadata: Metadata = { title: "Admin", robots: { index: false } };
 
 type Props = { searchParams: Promise<Record<string, string | undefined>> };
 

@@ -1,12 +1,17 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/site";
 import ListingFields from "@/components/ListingFields";
 import { getListing } from "@/lib/listings";
 import { getEventById } from "@/lib/events-store";
 import { formatEventDate, formatEventTime } from "@/lib/time";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Add or update an event | NS Live Music Finder" };
+export const metadata: Metadata = pageMeta({
+  title: "Add a gig, open mic or regular night",
+  description: "Know a pub, brewery or hall in Nova Scotia with live music, an open mic or a weekly jam? Send it in and it will be added once it's checked.",
+  path: "/suggest",
+});
 
 type Props = { searchParams: Promise<Record<string, string | undefined>> };
 

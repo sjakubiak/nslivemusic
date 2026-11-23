@@ -2,11 +2,19 @@ import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import "./globals.css";
 import { isSampleData } from "@/lib/events-store";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "NS Live Music Finder",
-  description: "Live music, open mics and jam sessions at pubs, breweries and venues across Nova Scotia.",
-};
+export function generateMetadata(): Metadata {
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: { default: SITE_NAME, template: `%s | ${SITE_NAME}` },
+    description: SITE_DESCRIPTION,
+    applicationName: SITE_NAME,
+    twitter: { card: "summary_large_image" },
+    // Made-up sample events shouldn't end up in search results.
+    ...(isSampleData() && { robots: { index: false, follow: true } }),
+  };
+}
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1 };
 

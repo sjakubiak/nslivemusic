@@ -7,6 +7,7 @@ import { formatEventDate, formatEventTime } from "@/lib/time";
 import EventImage from "@/components/EventImage";
 import DetailsDirections from "@/components/DetailsDirections";
 import MiniMap from "@/components/MiniMap";
+import { clip, eventJsonLd, isPast, jsonLdString, pageMeta, townPath, venuePath } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +15,22 @@ type Props = { params: Promise<{ id: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const e = getEventById((await params).id);
-  return { title: e ? `${e.title} · ${e.venueName} | NS Live Music Finder` : "Event not found" };
+  if (!e) return { title: "Event not found", robots: { index: false } };
+  const when = `${formatEventDate(e.startDateTime)}, ${formatEventTime(e.startDateTime)}`;
+  const label = EVENT_TYPE_LABEL[e.eventType].toLowerCase();
+  const description = clip(
+    `${when} at ${e.venueName}, ${e.city}, NS.${e.eventType === "OTHER" ? "" : ` ${label[0].toUpperCase()}${label.slice(1)}${e.genre?.length ? ` (${e.genre.join(", ")})` : ""}.`} ${e.description}`,
+  );
+  return {
+    ...pageMeta({
+      title: `${e.title} at ${e.venueName}, ${e.city}`,
+      description,
+      path: `/events/${e.id}`,
+      image: e.imageUrl,
+    }),
+    // Once it's over, keep the page working for old links but out of search results.
+    ...(isPast(e) && { robots: { index: false, follow: true } }),
+  };
 }
 
 export default async function EventPage({ params }: Props) {
@@ -26,7 +42,11 @@ export default async function EventPage({ params }: Props) {
 
   return (
     <main className="details">
-      <Link href="/" className="back">← All events</Link>
+      {!isPast(e) && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(eventJsonLd(e)) }} />}
+      <p className="crumbs">
+        <Link href="/">All events</Link> › <Link href={townPath(e.city)}>{e.city}</Link> ›{" "}
+        <Link href={venuePath(e)}>{e.venueName}</Link>
+      </p>
       {e.imageUrl && <EventImage event={e} className="details-img" />}
       <div className="details-grid">
         <div>
@@ -48,7 +68,7 @@ export default async function EventPage({ params }: Props) {
             <dd>{cover}</dd>
             <dt>Venue</dt>
             <dd>
-              {e.venueName}
+              <Link href={venuePath(e)}>{e.venueName}</Link>
               <br />
               {e.address}, {e.city}, {e.province}
             </dd>
