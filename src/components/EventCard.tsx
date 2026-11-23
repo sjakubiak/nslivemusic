@@ -2,9 +2,9 @@
 import Link from "next/link";
 import type { EventWithDistance } from "@/lib/filters";
 import { EVENT_TYPE_COLOR, EVENT_TYPE_LABEL } from "@/lib/types";
-import { formatEventRange } from "@/lib/time";
+import { formatEventTime } from "@/lib/time";
 import { formatDistance, type LatLng } from "@/lib/geo";
-import EventImage from "./EventImage";
+import DateStub from "./DateStub";
 import DirectionsButtons from "./DirectionsButtons";
 
 export default function EventCard({
@@ -21,15 +21,16 @@ export default function EventCard({
   return (
     <article
       className={`card ${highlighted ? "is-highlighted" : ""}`}
+      style={{ ["--type-color" as string]: EVENT_TYPE_COLOR[event.eventType] }}
       onMouseEnter={() => onHover?.(event.id)}
       onMouseLeave={() => onHover?.(null)}
     >
       <Link href={`/events/${event.id}`} className="card-media" tabIndex={-1} aria-hidden>
-        <EventImage event={event} className="card-img" />
+        <DateStub iso={event.startDateTime} />
       </Link>
       <div className="card-body">
         <div className="card-meta-row">
-          <span className="type-pill" style={{ ["--type-color" as string]: EVENT_TYPE_COLOR[event.eventType] }}>
+          <span className="type-pill">
             {EVENT_TYPE_LABEL[event.eventType]}
           </span>
           {event.distanceKm != null && <span className="distance">{formatDistance(event.distanceKm)} away</span>}
@@ -40,8 +41,11 @@ export default function EventCard({
         <p className="card-venue">
           {event.venueName} · {event.city}
         </p>
-        <p className="card-when">{formatEventRange(event.startDateTime, event.endDateTime)}</p>
-        {!!event.genre?.length && <p className="card-genres">{event.genre.join(" · ")}</p>}
+        <p className="card-when">
+          {formatEventTime(event.startDateTime)}
+          {event.endDateTime && ` to ${formatEventTime(event.endDateTime)}`}
+          {!!event.genre?.length && <span className="card-genres"> · {event.genre.join(", ")}</span>}
+        </p>
         <DirectionsButtons dest={{ lat: event.latitude, lng: event.longitude }} origin={directionsOrigin} compact />
       </div>
     </article>

@@ -27,13 +27,13 @@ export default async function EventPage({ params }: Props) {
   return (
     <main className="details">
       <Link href="/" className="back">← All events</Link>
-      <EventImage event={e} className="details-img" />
+      {e.imageUrl && <EventImage event={e} className="details-img" />}
       <div className="details-grid">
         <div>
           <span className="type-pill" style={{ ["--type-color" as string]: EVENT_TYPE_COLOR[e.eventType] }}>
             {EVENT_TYPE_LABEL[e.eventType]}
           </span>
-          {e.verified && <span className="verified" title="Listed by the venue itself">✓ Verified by venue</span>}
+          {e.verified && <span className="verified" title="Listed by the venue itself">From the venue</span>}
           <h1>{e.title}</h1>
           <p className="details-when">
             {formatEventDate(e.startDateTime)} · {formatEventTime(e.startDateTime)}

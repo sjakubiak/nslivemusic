@@ -86,7 +86,7 @@ export default function Finder({ events }: { events: MusicEvent[] }) {
           <input
             type="search"
             className="search"
-            placeholder="Search venue, city, event, genre…"
+            placeholder="Town, venue, band or style"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             aria-label="Search events"
@@ -156,7 +156,7 @@ export default function Finder({ events }: { events: MusicEvent[] }) {
               }}
             >
               <option value="">Anywhere in NS</option>
-              <option value="__device">📍 My current location</option>
+              <option value="__device">Where I am now</option>
               {Object.keys(NS_PLACES).sort().map((p) => (
                 <option key={p}>{p}</option>
               ))}
