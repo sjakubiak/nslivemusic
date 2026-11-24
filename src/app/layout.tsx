@@ -4,7 +4,7 @@ import "./globals.css";
 import { isSampleData } from "@/lib/events-store";
 import Analytics from "@/components/Analytics";
 import FeedbackLink from "@/components/FeedbackLink";
-import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+import { CONTACT_EMAIL, DEVELOPER, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 export function generateMetadata(): Metadata {
   return {
@@ -50,7 +50,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             people who send them in. Always check with the venue before you head out.
           </p>
           <p>
-            <Link href="/suggest">Add a regular night</Link> · <FeedbackLink>Tell us what you think</FeedbackLink>
+            <Link href="/suggest">Add a regular night</Link> · <FeedbackLink>Tell us what you think</FeedbackLink> · Email{" "}
+            <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+          </p>
+          <p className="footer-credit">
+            Built by{" "}
+            <a href={DEVELOPER.url} target="_blank" rel="noopener">
+              {DEVELOPER.name}
+            </a>
           </p>
         </footer>
         <Analytics />

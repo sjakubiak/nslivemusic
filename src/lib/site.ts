@@ -10,6 +10,10 @@ export const SITE_NAME = "NS Live Music Finder";
 export const SITE_DESCRIPTION =
   "Find live music, open mics, jam sessions and kitchen parties tonight and this week in Halifax, Dartmouth and towns across Nova Scotia.";
 
+/** Who built and runs the site, shown in the footer and in structured data. */
+export const DEVELOPER = { name: "Dockside Digital", url: "https://docksidedigital.ca/" };
+export const CONTACT_EMAIL = "sjakubiak@gmail.com";
+
 /** "Annapolis Royal" -> "annapolis-royal", "Durty Nelly's" -> "durty-nellys". */
 export function slugify(s: string): string {
   return s

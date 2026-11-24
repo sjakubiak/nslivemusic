@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { FOUND_VIA, TOPICS } from "@/lib/feedback";
-import { pageMeta } from "@/lib/site";
+import { CONTACT_EMAIL, pageMeta } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -38,7 +38,8 @@ export default async function FeedbackPage({ searchParams }: Props) {
       <h1>Send feedback</h1>
       <p className="muted">
         This site is run by one person in Nova Scotia. Tell us what's useful, what's missing, or what's broken. To add a regular night,{" "}
-        <Link href="/suggest">use this form instead</Link>.
+        <Link href="/suggest">use this form instead</Link>. You can also email{" "}
+        <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
       </p>
       {p.error && (
         <p className="form-error" role="alert">

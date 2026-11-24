@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import Finder from "@/components/Finder";
 import { getAllEvents } from "@/lib/events-store";
-import { jsonLdString, pageMeta, SITE_DESCRIPTION, SITE_NAME, SITE_URL, townsWithEvents } from "@/lib/site";
+import { CONTACT_EMAIL, DEVELOPER, jsonLdString, pageMeta, SITE_DESCRIPTION, SITE_NAME, SITE_URL, townsWithEvents } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +18,14 @@ const websiteLd = {
   name: SITE_NAME,
   url: SITE_URL,
   inLanguage: "en-CA",
+  creator: { "@type": "Organization", name: DEVELOPER.name, url: DEVELOPER.url },
+  publisher: {
+    "@type": "Organization",
+    name: DEVELOPER.name,
+    url: DEVELOPER.url,
+    email: CONTACT_EMAIL,
+    contactPoint: { "@type": "ContactPoint", contactType: "customer support", email: CONTACT_EMAIL },
+  },
 };
 
 export default function Home() {
