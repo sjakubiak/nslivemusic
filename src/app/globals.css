@@ -58,6 +58,8 @@ h1, h2, h3 { font-family: var(--display); letter-spacing: -0.01em; }
 
 .site-footer { border-top: 1px solid var(--border); margin-top: 24px; padding: 18px 16px 28px; color: var(--muted); font-size: 13px; }
 .site-footer p { max-width: 720px; margin: 0 auto 6px; }
+.site-footer a { overflow-wrap: anywhere; }
+.footer-credit { margin-top: 12px !important; font-size: 12px; }
 
 .finder { max-width: 1400px; margin: 0 auto; padding: 14px 16px 8px; }
 .controls { display: grid; gap: 12px; }
