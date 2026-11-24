@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import "./globals.css";
 import { isSampleData } from "@/lib/events-store";
+import Analytics from "@/components/Analytics";
+import FeedbackLink from "@/components/FeedbackLink";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 export function generateMetadata(): Metadata {
@@ -33,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </Link>
           <nav className="header-nav">
             <Link href="/suggest">Add a night</Link>
+            <FeedbackLink />
           </nav>
           {isSampleData() && (
             <span className="sample-badge" title="These events are made-up examples until real event sources are switched on">
@@ -47,9 +50,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             people who send them in. Always check with the venue before you head out.
           </p>
           <p>
-            <Link href="/suggest">Add a regular night</Link>
+            <Link href="/suggest">Add a regular night</Link> · <FeedbackLink>Tell us what you think</FeedbackLink>
           </p>
         </footer>
+        <Analytics />
       </body>
     </html>
   );

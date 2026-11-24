@@ -76,7 +76,7 @@ const fileBackend: Backend = {
 };
 
 /** Minimal shape of a Cloudflare D1 binding (only what we use). */
-interface D1Like {
+export interface D1Like {
   prepare(sql: string): { bind(...v: unknown[]): { run(): Promise<unknown>; all<T>(): Promise<{ results: T[] }> }; all<T>(): Promise<{ results: T[] }>; run(): Promise<unknown> };
   batch(stmts: unknown[]): Promise<unknown>;
 }
@@ -116,7 +116,7 @@ export function d1Backend(db: D1Like): Backend {
 }
 
 /** The Worker's D1 binding, when running on Cloudflare. Undefined in plain Node (local dev, tests, ingest). */
-async function d1(): Promise<D1Like | undefined> {
+export async function d1(): Promise<D1Like | undefined> {
   if (!(typeof navigator !== "undefined" && navigator.userAgent === "Cloudflare-Workers")) return undefined;
   try {
     const { getCloudflareContext } = await import("@opennextjs/cloudflare");

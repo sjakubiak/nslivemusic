@@ -5,6 +5,7 @@ import { isAdmin } from "@/lib/admin-auth";
 import { allListings, storageIsPermanent, type Listing } from "@/lib/listings";
 import { getEventById } from "@/lib/events-store";
 import { DAYS } from "@/lib/listing-form";
+import { allFeedback, FOUND_VIA, TOPICS, type Feedback } from "@/lib/feedback";
 import type { ManualEntry } from "@/pipeline/sources/manual";
 
 export const dynamic = "force-dynamic";
@@ -56,6 +57,17 @@ export default async function AdminPage({ searchParams }: Props) {
   } catch (err) {
     loadError = (err as Error).message;
   }
+  let feedback: Feedback[] = [];
+  try {
+    feedback = await allFeedback();
+  } catch (err) {
+    loadError ||= (err as Error).message;
+  }
+  const unread = feedback.filter((f) => f.status === "new");
+  const optedIn = [...new Set(feedback.filter((f) => f.mayContact && f.contact).map((f) => f.contact!))];
+  const foundCounts = FOUND_VIA.map(([k, label]) => [label, feedback.filter((f) => f.foundVia === k).length] as const).filter(([, n]) => n > 0);
+  const topicLabel = (k: string) => TOPICS.find(([t]) => t === k)?.[1] ?? k;
+  const foundLabel = (k: string) => FOUND_VIA.find(([t]) => t === k)?.[1] ?? k;
   const byId = new Map(all.map((l) => [l.id, l]));
   const pending = all.filter((l) => l.status === "pending").sort((a, b) => a.createdAt.localeCompare(b.createdAt));
   const live = all
@@ -136,6 +148,54 @@ export default async function AdminPage({ searchParams }: Props) {
           </section>
         );
       })}
+
+      <h2>Visitors</h2>
+      <p>
+        Visitor numbers (real browsers only, bots left out) are in{" "}
+        <a href="https://dash.cloudflare.com/?to=/:account/web-analytics" target="_blank" rel="noopener noreferrer">
+          Cloudflare Web Analytics
+        </a>
+        {process.env.CF_WEB_ANALYTICS_TOKEN ? "." : ". It isn't switched on yet: add the site there and set CF_WEB_ANALYTICS_TOKEN (see docs/CLOUDFLARE.md)."}
+      </p>
+
+      <h2 id="feedback">Feedback ({unread.length} new, {feedback.length} in all)</h2>
+      {feedback.length === 0 && <p className="muted">No feedback yet.</p>}
+      {foundCounts.length > 0 && (
+        <p className="muted small">How people found the site: {foundCounts.map(([label, n]) => `${label} ${n}`).join(" · ")}</p>
+      )}
+      {optedIn.length > 0 && (
+        <p className="small">
+          {optedIn.length} {optedIn.length === 1 ? "person is" : "people are"} happy to be emailed:{" "}
+          <a href={`mailto:?bcc=${optedIn.map(encodeURIComponent).join(",")}&subject=${encodeURIComponent("NS Live Music Finder")}`}>email them all (BCC)</a>
+          <span className="muted"> · {optedIn.join(", ")}</span>
+        </p>
+      )}
+      {feedback.map((f) => (
+        <section key={f.id} className={`review${f.status === "read" ? " read" : ""}`}>
+          <header>
+            <strong>{topicLabel(f.topic)}</strong>
+            {f.status === "new" && <span className="new-tag">New</span>}
+            <span className="muted"> · {new Date(f.createdAt).toLocaleString("en-CA", { timeZone: "America/Halifax" })}</span>
+          </header>
+          <blockquote style={{ whiteSpace: "pre-wrap" }}>{f.message}</blockquote>
+          <p className="muted small">
+            {[
+              f.town && `From ${f.town}`,
+              f.foundVia && `Found us via: ${foundLabel(f.foundVia)}`,
+              f.page && `Was on ${f.page}`,
+              f.contact && `${f.contact}${f.mayContact ? " (happy to be emailed)" : " (only for this message)"}`,
+            ]
+              .filter(Boolean)
+              .join(" · ")}
+          </p>
+          <form method="post" action="/api/admin/action" className="actions">
+            <input type="hidden" name="id" value={f.id} />
+            {f.contact && <a href={`mailto:${encodeURIComponent(f.contact)}?subject=${encodeURIComponent("Your feedback on NS Live Music Finder")}`} className="button">Reply</a>}
+            {f.status === "new" && <button type="submit" name="action" value="feedback-read">Mark read</button>}
+            <button type="submit" name="action" value="feedback-delete">Delete</button>
+          </form>
+        </section>
+      ))}
 
       <div className="admin-head">
         <h2>Regular nights ({live.length})</h2>
