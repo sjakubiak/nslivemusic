@@ -34,10 +34,18 @@ Cloudflare has no disk, so events are gathered at build time:
      *Fine-grained tokens* > *Generate new token*; repository access: only
      `nslivemusic`; permissions: *Actions: Read and write*. Without it, approved
      changes appear at the next 6-hourly rebuild.
-7. **Optional: your own domain.** *Workers & Pages* > *nslivemusic* > *Settings* >
+7. **Visitor analytics** (free, no cookies, counts real browsers and leaves out
+   most bots). Cloudflare > *Analytics & Logs* > *Web Analytics* > *Add a site*,
+   hostname `nslivemusic.novascotia.workers.dev`. On the next screen, copy the
+   `token` value from the JavaScript snippet (32 letters and numbers; it's public,
+   not a secret). In GitHub: *Settings* > *Secrets and variables* > *Actions* >
+   *Variables* tab > *New repository variable*, name `CF_WEB_ANALYTICS_TOKEN`.
+   Then run the deploy again. Visitor numbers then show in Web Analytics.
+8. **Optional: your own domain.** *Workers & Pages* > *nslivemusic* > *Settings* >
    *Domains & Routes* > *Add* > *Custom domain*.
 
-Suggestions and regular nights are stored in the free Cloudflare D1 database
+Suggestions, regular nights and visitor feedback (from /feedback, table
+`feedback`, read on /admin) are stored in the free Cloudflare D1 database
 `nslivemusic` (see `wrangler.jsonc`). Nothing to set up: the table is created on
 first use. You can browse it under *Storage & databases* > *D1*.
 

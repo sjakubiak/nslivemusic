@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { isAdmin } from "@/lib/admin-auth";
 import { entryFromForm, formFields, FormError } from "@/lib/listing-form";
 import { approve, getListing, reject, removeListing, saveListing } from "@/lib/listings";
+import { deleteFeedback, markFeedbackRead } from "@/lib/feedback";
 import { runIngest } from "@/lib/refresh";
 import { sameOrigin } from "@/lib/rate-limit";
 
@@ -14,6 +15,17 @@ export async function POST(req: NextRequest) {
   const id = one("id");
   const to = new URL(one("back") === "edit" && id ? `/admin/edit/${encodeURIComponent(id)}` : "/admin", req.url);
   const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Halifax" }).format(new Date());
+  if (action === "feedback-read" || action === "feedback-delete") {
+    try {
+      if (action === "feedback-read") await markFeedbackRead(id);
+      else await deleteFeedback(id);
+      to.searchParams.set("ok", action === "feedback-read" ? "Marked as read." : "Feedback deleted.");
+    } catch (err) {
+      to.searchParams.set("error", err instanceof Error ? err.message : "Something went wrong.");
+    }
+    to.hash = "feedback";
+    return NextResponse.redirect(to, 303);
+  }
   try {
     if (action === "approve") {
       const s = await getListing(id);
